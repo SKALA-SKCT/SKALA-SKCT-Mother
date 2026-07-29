@@ -1,0 +1,79 @@
+/* Reference: section padding 80/30/0; one white card, radius 16,
+   padding 72px 78px, three 248px columns spaced apart. */
+
+.section {
+  display: flex;
+  justify-content: center;
+  padding: 128px 30px 0;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  padding: 60px 64px;
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1 0 0;
+  width: 1px;
+  max-width: 248px;
+}
+
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 40px;
+  line-height: 1.4;
+  letter-spacing: -1px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-size: 24px;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  font-weight: 500;
+}
+
+.body {
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+@media (max-width: 1199.98px) {
+  .counter {
+    font-size: 36px;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 48px;
+    padding: 48px 32px;
+  }
+
+  .stat {
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .counter {
+    font-size: 30px;
+  }
+}

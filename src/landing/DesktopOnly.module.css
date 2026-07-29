@@ -1,0 +1,108 @@
+/* Hidden by default; globals.css swaps this in below the desktop breakpoint.
+   Plain page surface — the landing's base tokens, no gradient. */
+.gate {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 80px 30px;
+  background: var(--bg);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+}
+
+.brand {
+  margin-bottom: 44px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--sk-red);
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+/* `.heading` supplies the landing type scale (44 / 35 / 28). */
+.title {
+  margin-top: 20px;
+}
+
+.title span {
+  display: block;
+  white-space: nowrap;
+}
+
+.body {
+  margin-top: 18px;
+  max-width: 420px;
+  color: var(--ink-muted);
+  font-size: 18px;
+  line-height: 1.7;
+  letter-spacing: -0.5px;
+  word-break: keep-all;
+}
+
+.spec {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 18px 24px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.specLabel {
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+
+.specValue {
+  color: var(--ink-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+@media (max-width: 767.98px) {
+  .gate {
+    padding: 64px 20px;
+  }
+
+  .brand {
+    margin-bottom: 32px;
+  }
+
+  .body {
+    margin-top: 14px;
+    font-size: 16px;
+  }
+
+  .spec {
+    margin-top: 28px;
+    padding: 16px 18px;
+  }
+}
