@@ -1,0 +1,22 @@
+name = "skct-mother"
+compatibility_date = "2026-07-01"
+pages_build_output_dir = "dist"
+
+# 통합 계정 레지스트리(카카오 계정 · 계정 연결 매핑).
+# id는 `npx wrangler kv namespace create AUTH_KV` 실행 후 출력된 값으로 교체하세요.
+[[kv_namespaces]]
+binding = "AUTH_KV"
+id = "8486c149b2dd4ed68cf0d659623af15d"
+
+# skala-skct(연습앱)의 기존 KV 네임스페이스. 레거시 skala 계정 검증(usr:*, read)에만 사용.
+# skala-skct/wrangler.toml 의 SKCT_KV id 와 동일해야 함.
+[[kv_namespaces]]
+binding = "SKCT_KV"
+id = "a34241d2f25c4425b2aadd2ca4c49f35"
+
+# 시크릿(여기 넣지 않음):
+# - 로컬(pages dev): .dev.vars (.dev.vars.example 참고)
+# - 배포: npx wrangler pages secret put <NAME>
+#   SESSION_SECRET, KAKAO_CLIENT_ID, KAKAO_CLIENT_SECRET,
+#   KAKAO_REDIRECT_URI, SKCT_LEGACY_VERIFY_URL, SKCT_LEGACY_VERIFY_SECRET,
+#   SESSION_COOKIE_DOMAIN

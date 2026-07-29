@@ -1,0 +1,17 @@
+# Cloudflare `pages dev`/배포에서 쓰는 시크릿·환경변수. 이 파일을 `.dev.vars`로 복사해 채우세요.
+# `.dev.vars`는 .gitignore에 있어 커밋되지 않습니다.
+
+# 세 앱(마더·skct·skala) 공통 세션 서명 비밀. 32자 이상.
+SESSION_SECRET=change-me-to-a-long-random-string-32chars-min
+
+# 공유 쿠키 도메인. 배포: .example.com / 로컬 서브도메인 테스트: .skct.local
+SESSION_COOKIE_DOMAIN=.skct.local
+
+# 카카오 로그인 (https://developers.kakao.com → 내 애플리케이션)
+KAKAO_CLIENT_ID=1c52915100c69267b2be0abe1351cdda
+KAKAO_CLIENT_SECRET=your_kakao_client_secret
+KAKAO_REDIRECT_URI=http://www.skct.local/api/auth/kakao/callback
+
+# 기존 skct(모의고사) 계정 검증 위임 엔드포인트(§skct legacy-verify)
+SKCT_LEGACY_VERIFY_URL=http://mock.skct.local/api/auth/legacy-verify
+SKCT_LEGACY_VERIFY_SECRET=shared-secret-between-mother-and-skct
