@@ -1,0 +1,130 @@
+.section {
+  display: flex;
+  justify-content: center;
+  padding: 128px 30px 30px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 820px;
+  padding: 92px 40px 122px;
+  border-radius: 16px;
+  background: transparent;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  width: 100%;
+  max-width: 790px;
+}
+
+.title {
+  animation: faq-rise 0.95s cubic-bezier(0.16, 0.82, 0.18, 1) both;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid rgba(59, 59, 59, 0.12);
+  overflow: hidden;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+  animation: faq-rise 1.05s cubic-bezier(0.16, 0.82, 0.18, 1) both;
+  animation-delay: var(--faq-delay, 0ms);
+}
+
+.itemOpen {
+  background: var(--surface);
+  border-color: transparent;
+}
+
+.trigger {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 24px;
+  text-align: left;
+  font-size: 18px;
+  line-height: 1.7;
+  letter-spacing: -0.5px;
+  font-weight: 600;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  /* The asset points up, so the collapsed row is the flipped one. */
+  transform: rotate(180deg);
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.iconOpen {
+  transform: rotate(0deg);
+}
+
+.answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  padding: 0 24px;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.62s cubic-bezier(0.18, 0.72, 0.18, 1),
+    padding-bottom 0.62s cubic-bezier(0.18, 0.72, 0.18, 1),
+    opacity 0.35s ease;
+}
+
+.itemOpen .answer {
+  grid-template-rows: 1fr;
+  padding-bottom: 28px;
+  opacity: 1;
+}
+
+.answer p {
+  overflow: hidden;
+  max-width: 640px;
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+@keyframes faq-rise {
+  from {
+    opacity: 0;
+    transform: translateY(72px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .panel {
+    padding: 40px 20px 64px;
+  }
+}

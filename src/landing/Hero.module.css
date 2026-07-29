@@ -1,0 +1,198 @@
+/* Geometry mirrors the reference: section padding 60/30/280, 1200 container,
+   a 1.82094 aspect background plate, and an 80%-wide overlay group pinned 56px
+   from the plate's top. */
+
+.hero {
+  display: flex;
+  justify-content: center;
+  padding: 92px 30px 280px;
+  overflow: hidden;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+/* Title + lede share a 740px column, 16px apart. */
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 1120px;
+}
+
+.titleBlock h1 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.heroTitle.heroTitle {
+  font-size: 78px;
+  letter-spacing: -3.2px;
+}
+
+/* --- background plate ---------------------------------------------- */
+
+.plate {
+  position: relative;
+  margin-top: 102px;
+  width: 100%;
+  aspect-ratio: 1.82094;
+}
+
+/* Separate layer so the plate can scale up on entry without dragging the
+   dashboard group with it — same split the reference uses. */
+.plateBg {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.plateBg > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+.group {
+  position: absolute;
+  z-index: 1;
+  top: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+/* --- pill switcher --------------------------------------------------- */
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 46px;
+  padding: 2px 42px;
+  border-radius: 100px;
+  background: var(--surface);
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 500;
+  white-space: pre;
+  transition: color 0.2s ease;
+}
+
+.pillActive {
+  color: var(--ink);
+}
+
+.marker {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 100px;
+  background: rgba(59, 59, 59, 0.12);
+}
+
+/* --- dashboard frame -------------------------------------------------- */
+
+.frame {
+  position: relative;
+  width: 100%;
+  max-width: 911px;
+  aspect-ratio: 1.32799;
+  padding: 16px 17px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.54);
+  backdrop-filter: blur(54px);
+  -webkit-backdrop-filter: blur(54px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.shot {
+  position: absolute;
+  top: 2.33236%;
+  left: 1.8112%;
+  width: 96%;
+  height: 95%;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid rgba(59, 59, 59, 0.08);
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+
+.shotActive {
+  opacity: 1;
+}
+
+@media (max-width: 1000px) {
+  .hero {
+    padding: 130px 20px 160px;
+  }
+
+  .plate {
+    aspect-ratio: 1.20275;
+    border-radius: 12px;
+  }
+
+  .group {
+    top: 30px;
+    width: 90%;
+    gap: 24px;
+  }
+
+  .pills {
+    gap: 12px;
+    min-height: 44px;
+    padding: 2px 12px;
+  }
+
+  .pill {
+    font-size: 14px;
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .frame {
+    border-radius: 20px;
+    padding: 10px;
+  }
+
+}

@@ -1,215 +1,767 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css");
+
+/* ---------------------------------------------------------------
+   Design tokens — SKALA-SKCT landing
+   --------------------------------------------------------------- */
 :root {
-  --bg: #f6f7f9;
+  /* surface */
+  --bg: #f7f7f5;
   --surface: #ffffff;
-  --surface-2: #f0f2f5;
-  --border: #e2e5ea;
-  --text: #1a1d23;
-  --muted: #6b7280;
-  --primary: #2f6bff;
-  --primary-text: #ffffff;
+  --surface-sunken: #f4f4f2;
+
+  /* ink */
+  --ink: #202020;
+  --ink-muted: #686868;
+  --ink-faint: #9a9a97;
+  --ink-inverse: #ffffff;
+
+  /* accent */
+  --accent: #ff3c00;
+  --accent-soft: #ffe9e1;
+  --sk-red: #ea002c;
+  --lime: #c8eb2d;
+  --kakao: #fee500;
+  --kakao-text: #191919;
   --danger: #e5484d;
   --ok: #2fa84f;
-  --kakao: #fee500;
-  --kakao-text: #191600;
-  --radius: 10px;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  color-scheme: light dark;
+
+  /* lines & shadows */
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 18px 40px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 40px 90px rgba(0, 0, 0, 0.1);
+
+  /* radii */
+  --r-sm: 11px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 40px;
+  --r-pill: 100px;
+
+  /* layout */
+  --container: 1200px;
+  --gutter: 24px;
+  --section-gap: 120px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1115;
-    --surface: #171a21;
-    --surface-2: #1f232c;
-    --border: #2a2f3a;
-    --text: #e7e9ee;
-    --muted: #9aa1ad;
-    --primary: #4c82ff;
-    --danger: #ff6369;
-    --ok: #46c46a;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+/* ---------------------------------------------------------------
+   Reset
+   --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  /* Every reference preset enables these Inter alternates. */
+  font-feature-settings:
+    "blwf" 1,
+    "cv09" 1,
+    "cv03" 1,
+    "cv04" 1,
+    "cv11" 1;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------------------------------------------------------------
+   Desktop-only gate — every section is composed against the 1200px container,
+   and below that the two-column layouts fall back to a stacked tablet layout
+   that this content was never designed for. So the cutoff is the container
+   width, not a device guess. CSS-only: no JS, no hydration mismatch.
+   --------------------------------------------------------------- */
+@media (max-width: 1199.98px) {
+  /* !important because the section roots set their own `display` from CSS
+     modules, which outranks this element selector. */
+  body > header,
+  body > main,
+  body > footer,
+  #root > header,
+  #root > main,
+  #root > footer {
+    display: none !important;
+  }
+
+  body > [data-desktop-gate],
+  #root > [data-desktop-gate] {
+    display: flex;
   }
 }
 
-* {
-  box-sizing: border-box;
-}
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', Roboto,
-    sans-serif;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+/* ---------------------------------------------------------------
+   Scene inversion — the AI-assist gradient grows into the page background
+   over DataPlatformSection (see GrowthSection.tsx). That section flips
+   `body.scene-dark`, and the ink inversion is scoped to the header and the
+   section itself so no other section is affected.
+   --------------------------------------------------------------- */
+
 h1,
 h2,
-h3 {
-  line-height: 1.25;
-}
-a {
-  color: var(--primary);
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
+h3,
+h4,
+p,
+figure,
+ul,
+ol {
+  margin: 0;
 }
 
-.page {
-  min-height: 100dvh;
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------------------------------------------------------------
+   Shared primitives
+   --------------------------------------------------------------- */
+.container {
+  width: min(var(--container), calc(100vw - 2 * var(--gutter)));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section-gap);
+}
+
+/* Type scale — mirrors the reference's Framer text presets exactly.
+   display 90/72/42 · heading 48/38/30 · subheading 36/30/26
+   title 24 (fixed) · counter 40/36/30 · body 16 · lede 18 */
+.display {
+  font-size: 90px;
+  line-height: 1;
+  letter-spacing: -4px;
+  font-weight: 500;
+}
+
+.heading {
+  font-size: 44px;
+  line-height: 1.2;
+  letter-spacing: -1.8px;
+  font-weight: 700;
+}
+
+.subheading {
+  font-size: 36px;
+  line-height: 1.4;
+  letter-spacing: -1px;
+  font-weight: 500;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 1.4;
+  letter-spacing: -0.5px;
+  font-weight: 500;
+}
+
+.counter {
+  font-size: 40px;
+  line-height: 1.4;
+  letter-spacing: -1px;
+  font-weight: 600;
+}
+
+.lede {
+  color: var(--ink-muted);
+  font-size: 18px;
+  line-height: 1.7;
+  letter-spacing: -0.5px;
+}
+
+.body-sm {
+  color: var(--ink-muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+@media (max-width: 1199.98px) {
+  .display {
+    font-size: 72px;
+    letter-spacing: -3px;
+  }
+
+  .heading {
+    font-size: 35px;
+    letter-spacing: -1.2px;
+  }
+
+  .subheading {
+    font-size: 30px;
+    letter-spacing: -0.6px;
+  }
+
+  .counter {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .display {
+    font-size: 42px;
+    letter-spacing: -1.6px;
+  }
+
+  .heading {
+    font-size: 28px;
+    letter-spacing: -1px;
+  }
+
+  .subheading {
+    font-size: 26px;
+    letter-spacing: -0.8px;
+  }
+
+  .counter {
+    font-size: 30px;
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/* Scroll-in reveal. The hidden state is gated on `data-reveal="on"`, which
+   ScrollReveal sets after mounting — so nothing can get stuck invisible if
+   scripting never runs. */
+:root[data-reveal="on"] .reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 56px));
+}
+
+:root[data-reveal="on"] .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 1.05s cubic-bezier(0.18, 0.72, 0.18, 1),
+    transform 1.15s cubic-bezier(0.16, 0.82, 0.18, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Background plates scale up as they arrive, like the reference. */
+:root[data-reveal="on"] .reveal-scale {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+:root[data-reveal="on"] .reveal-scale.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--reveal-scale-opacity-duration, 1.05s) ease,
+    transform var(--reveal-scale-transform-duration, 1.2s) cubic-bezier(0.16, 0.82, 0.18, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Product tiles ease up into place. */
+:root[data-reveal="on"] .reveal-tile {
+  opacity: 0;
+  transform: scale(0.9) translateY(40px);
+}
+
+:root[data-reveal="on"] .reveal-tile.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.95s ease,
+    transform 1.05s cubic-bezier(0.16, 0.82, 0.18, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Centred section intro */
+.section-intro {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  :root[data-reveal="on"] .reveal,
+  :root[data-reveal="on"] .reveal-tile,
+  :root[data-reveal="on"] .reveal-scale {
+    opacity: 1;
+    transform: none;
+  }
+}
+.auth-shell {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  min-height: 100dvh;
+  padding: 40px 30px;
+  background: var(--bg);
 }
-.container {
+
+.auth-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(100%, 980px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 560px;
+  padding: 48px 44px;
+  overflow: hidden;
+}
+
+.auth-panel-bg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  max-width: 920px;
-  margin: 0 auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
 }
-.muted {
-  color: var(--muted);
+
+.auth-panel-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.06) 62%);
 }
-.center {
+
+.auth-panel-top {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.auth-panel-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 12px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.auth-panel-home:hover {
+  background: rgba(255, 255, 255, 0.24);
+  color: var(--ink-inverse);
+}
+
+.auth-panel-home:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 3px;
+}
+
+.auth-panel-head,
+.auth-panel-caption {
+  position: relative;
+  color: var(--ink-inverse);
+}
+
+.auth-panel-head {
+  max-width: 320px;
+  font-size: 32px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.auth-panel-caption {
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.78);
+  white-space: pre-line;
+}
+
+.auth-form-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 44px;
+}
+
+.auth-form-panel-centered {
+  align-items: center;
+  padding: 56px 50px;
   text-align: center;
 }
 
-/* 카드 그리드(랜딩) */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-  margin-top: 24px;
-}
-.card {
-  display: block;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 22px;
-  color: inherit;
-  transition: transform 0.08s ease, border-color 0.12s ease;
-}
-.card:hover {
-  text-decoration: none;
-  transform: translateY(-2px);
-  border-color: var(--primary);
-}
-.card h3 {
-  margin: 0 0 6px;
-}
-.card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.92rem;
+.auth-help {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 2;
 }
 
-/* 인증 박스 */
+.auth-help > button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink-muted);
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 700;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.auth-help > button:hover,
+.auth-help > button:focus-visible {
+  border-color: var(--ink);
+  background: var(--surface-sunken);
+  color: var(--ink);
+  outline: none;
+}
+
+.auth-help-tooltip {
+  position: absolute;
+  top: 42px;
+  right: 0;
+  width: 300px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  text-align: left;
+  transition:
+    opacity 0.15s ease,
+    visibility 0.15s ease,
+    transform 0.15s ease;
+}
+
+.auth-help:hover .auth-help-tooltip,
+.auth-help:focus-within .auth-help-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.auth-help-tooltip strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.auth-help-tooltip p {
+  margin-top: 6px;
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.auth-brand {
+  align-self: flex-start;
+}
+
+.auth-form-panel-centered .auth-brand {
+  align-self: center;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-mark img {
+  width: auto;
+}
+
+.brand-mark span {
+  color: var(--ink);
+  line-height: 1;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.auth-title {
+  margin-top: 28px;
+  font-size: 24px;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+.auth-form-panel-centered .auth-title {
+  margin-top: 34px;
+  color: #555555;
+  font-size: 20px;
+  line-height: 1.75;
+  letter-spacing: 0;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.auth-lede {
+  margin-top: 6px;
+  color: var(--ink-muted);
+  font-size: 14px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.auth-body {
+  margin-top: 20px;
+}
+
+.auth-form-panel-centered .auth-body {
+  width: 100%;
+  margin-top: 46px;
+}
+
 .auth-box {
   width: 100%;
-  max-width: 380px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 28px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-}
-.auth-box h1 {
-  margin: 0;
-  font-size: 1.35rem;
-}
-.auth-box input {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-2);
-  color: var(--text);
-  font-size: 0.98rem;
-}
-.auth-box input:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: -1px;
-}
-.auth-err {
-  color: var(--danger);
-  font-size: 0.88rem;
-}
-.auth-ok {
-  color: var(--ok);
-  font-size: 0.88rem;
+  gap: 18px;
 }
 
-/* 버튼 */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field-label {
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.auth-box input[type='text'],
+.auth-box input[type='password'],
+.auth-box input:not([type]) {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.5;
+  transition:
+    border-color 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.auth-box input::placeholder {
+  color: var(--ink-faint);
+}
+
+.auth-box input:hover {
+  border-color: var(--line-strong);
+}
+
+.auth-box input:focus-visible {
+  border-color: var(--ink-muted);
+  outline: 2px solid rgba(32, 32, 32, 0.24);
+  outline-offset: 2px;
+}
+
+.auth-err {
+  color: var(--danger);
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.auth-ok {
+  color: var(--ok);
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-sunken);
+}
+
+.segment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border-radius: 8px;
+  color: var(--ink-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.segment input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.segment:has(input:checked) {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 11px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-2);
-  color: var(--text);
-  font-size: 0.98rem;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  text-decoration: none;
+  transition:
+    filter 0.12s ease,
+    opacity 0.12s ease,
+    border-color 0.12s ease;
 }
+
 .btn:hover {
-  text-decoration: none;
   filter: brightness(0.98);
 }
+
+.btn:focus-visible {
+  outline: 2px solid rgba(32, 32, 32, 0.24);
+  outline-offset: 2px;
+}
+
 .btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
+
 .btn.primary {
-  background: var(--primary);
-  color: var(--primary-text);
   border-color: transparent;
+  background: var(--sk-red);
+  color: var(--ink-inverse);
 }
+
+.btn.primary:hover:not(:disabled) {
+  filter: brightness(0.94);
+}
+
 .btn.block {
   width: 100%;
 }
+
 .btn.kakao {
+  border-color: transparent;
   background: var(--kakao);
   color: var(--kakao-text);
-  border-color: transparent;
 }
+
+.btn.kakao:hover {
+  filter: brightness(0.96);
+}
+
+.auth-form-panel-centered .btn.kakao {
+  min-height: 56px;
+  border-radius: 8px;
+  gap: 16px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.auth-form-panel-centered .btn.kakao svg {
+  width: 22px;
+  height: 21px;
+  flex: 0 0 auto;
+}
+
 .linklike {
+  border: 0;
   background: none;
-  border: none;
-  color: var(--primary);
+  color: var(--ink-muted);
   cursor: pointer;
   font: inherit;
   padding: 0;
-}
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--muted);
-  font-size: 0.82rem;
-  margin: 4px 0;
-}
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
 }
 
 .stack {
@@ -217,13 +769,9 @@ a:hover {
   flex-direction: column;
   gap: 12px;
 }
+
 .row {
   display: flex;
   gap: 8px;
   align-items: center;
-}
-.field-label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: 4px;
 }
