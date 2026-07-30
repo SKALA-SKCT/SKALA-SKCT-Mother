@@ -25,11 +25,6 @@ const LOGIN =
   "leading-[1.7] text-inverse [transition:background-color_0.25s_ease,transform_0.25s_ease] " +
   "hover:bg-skRed hover:[transform:translateY(-1px)] max-[900px]:hidden";
 
-const ACCOUNT =
-  "rounded-lg border border-black/10 bg-white px-3 py-1.5 text-sm font-semibold text-ink " +
-  "transition hover:bg-black/[0.04] focus:outline-none focus-visible:outline-none focus-visible:ring-0 " +
-  "max-[900px]:hidden";
-
 export default function SiteHeader() {
   const { user, loading, logout } = useAuth();
   const [accountOpen, setAccountOpen] = useState(false);
@@ -65,7 +60,7 @@ export default function SiteHeader() {
               onMouseLeave={() => setAccountOpen(false)}
             >
               <button
-                className={ACCOUNT}
+                className={LOGIN}
                 type="button"
                 aria-haspopup="menu"
                 aria-expanded={accountOpen}
