@@ -16,15 +16,15 @@ export default function Settings() {
 
   return (
     <div className="page">
-      <div className="container" style={{ maxWidth: 560 }}>
-        <div className="row" style={{ justifyContent: 'space-between' }}>
-          <h1 style={{ margin: 0 }}>설정</h1>
+      <div className="container max-w-[560px]">
+        <div className="row justify-between">
+          <h1 className="m-0">설정</h1>
           <Link className="btn" to="/">
             ← 홈
           </Link>
         </div>
 
-        <div className="auth-box" style={{ maxWidth: 'none', marginTop: 12 }}>
+        <div className="auth-box mt-3 max-w-none">
           <div>
             <strong>{user.nick}</strong>{' '}
             <span className="muted">({user.isKakao ? '카카오 계정' : '기존 계정'})</span>
@@ -46,7 +46,7 @@ export default function Settings() {
           </p>
         )}
 
-        <div className="row" style={{ marginTop: 16 }}>
+        <div className="row mt-4">
           <a className="btn" href={MOCK_URL}>
             모의고사 열기
           </a>
