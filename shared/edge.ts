@@ -40,7 +40,6 @@ export function safeRedirect(to: string | null, env: any, origin: string): strin
       env.VITE_MOCK_URL,
       env.PRACTICE_URL,
       env.VITE_PRACTICE_URL,
-      'https://www.mock.skala-skct.com',
       'https://mock.skala-skct.com',
       'https://skala-skct.vercel.app',
     ].filter(Boolean);
