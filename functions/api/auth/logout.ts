@@ -1,22 +1,8 @@
 // 로그아웃: 공유 세션 쿠키(Domain 스코프)를 클리어. 세 서브도메인 모두 무효화됨.
 import { clearSessionCookie } from '../../../shared/auth';
-import { cookieOptsFrom, json, safeRedirect } from '../../../shared/edge';
+import { cookieOptsFrom, json } from '../../../shared/edge';
 
 export async function onRequestPost(context: any): Promise<Response> {
   const { request, env } = context;
   return json({ ok: true }, 200, { 'set-cookie': clearSessionCookie(cookieOptsFrom(env, request)) });
-}
-
-export async function onRequestGet(context: any): Promise<Response> {
-  const { request, env } = context;
-  const url = new URL(request.url);
-  const origin = url.origin;
-  const redirectTo = safeRedirect(url.searchParams.get('redirect'), env, origin);
-  return new Response(null, {
-    status: 302,
-    headers: {
-      'set-cookie': clearSessionCookie(cookieOptsFrom(env, request)),
-      location: redirectTo,
-    },
-  });
 }

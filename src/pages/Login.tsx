@@ -26,7 +26,7 @@ export default function Login() {
   // 이미 로그인 상태 + 자식 앱으로 돌아가야 하면 전체 이동.
   useEffect(() => {
     if (!loading && user && isAbsolute(redirect)) {
-      window.location.replace(`/api/auth/handoff/start?redirect=${encodeURIComponent(redirect)}`);
+      window.location.replace(redirect);
     }
   }, [loading, user, redirect]);
 

@@ -76,9 +76,6 @@ export async function onRequestGet(context: any): Promise<Response> {
   headers.append('set-cookie', 'kakao_redirect=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0');
   // 신규 가입이면 기존 계정 통합 마법사(/welcome)를 먼저 거친 뒤 원래 목적지로.
   const dest = safeRedirect(redirectTo, env, origin);
-  const handoffDest = dest.startsWith(origin)
-    ? dest
-    : `${origin}/api/auth/handoff/start?redirect=${encodeURIComponent(dest)}`;
-  headers.set('location', isNew ? `${origin}/welcome?next=${encodeURIComponent(handoffDest)}` : handoffDest);
+  headers.set('location', isNew ? `${origin}/welcome?next=${encodeURIComponent(dest)}` : dest);
   return new Response(null, { status: 302, headers });
 }

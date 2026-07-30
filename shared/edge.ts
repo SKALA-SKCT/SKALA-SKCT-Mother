@@ -35,15 +35,6 @@ export function safeRedirect(to: string | null, env: any, origin: string): strin
     const u = new URL(to);
     const dom = String(env.SESSION_COOKIE_DOMAIN || '').replace(/^\./, '');
     if (dom && (u.hostname === dom || u.hostname.endsWith('.' + dom))) return u.toString();
-    const allowed = [
-      env.MOCK_URL,
-      env.VITE_MOCK_URL,
-      env.PRACTICE_URL,
-      env.VITE_PRACTICE_URL,
-      'https://mock.skala-skct.com',
-      'https://skala-skct.vercel.app',
-    ].filter(Boolean);
-    if (allowed.some((value) => new URL(String(value)).origin === u.origin)) return u.toString();
   } catch {
     /* ignore */
   }
