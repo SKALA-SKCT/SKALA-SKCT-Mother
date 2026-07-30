@@ -46,9 +46,6 @@ export default function SiteHeader() {
           {!loading && user ? (
             <>
               <span className="whitespace-nowrap text-ink">{user.nick}님</span>
-              <a className={LOGIN} href="/settings">
-                설정
-              </a>
               <button className={LOGIN} type="button" onClick={logout}>
                 로그아웃
               </button>
