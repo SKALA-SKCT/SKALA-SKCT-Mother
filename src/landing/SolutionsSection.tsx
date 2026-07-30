@@ -3,9 +3,44 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef } from "react";
 import { solutions } from "./content";
-import styles from "./SolutionsSection.module.css";
+import { HEADING } from "../styleTokens";
 
 const STACK_TOPS = [200, 230, 260];
+
+/* Reference: section padding 110/30/0, container gap 64 (max 1200),
+   card list gap 24 (max 1044). Title stays with the card stack section only. */
+
+/** Literal classes so Tailwind can see them; mirrors STACK_TOPS. */
+const STACK_TOP_CLASS = ["top-[200px]", "top-[230px]", "top-[260px]"];
+
+const CARD_COMMON =
+  "sticky flex items-center w-full min-h-[478px] overflow-hidden rounded-2xl bg-surface " +
+  "[transform-origin:50%_50%] [will-change:transform,opacity] " +
+  "max-[767.98px]:static max-[767.98px]:flex-col max-[767.98px]:gap-8 " +
+  "max-[767.98px]:px-6 max-[767.98px]:pb-0 max-[767.98px]:pt-8";
+
+// The two variants are kept as complete, mutually exclusive strings. Merging them
+// would leave the winner up to Tailwind's output order rather than the markup.
+const CARD = `${CARD_COMMON} gap-[144px] pl-14 max-[1099.98px]:gap-12 max-[1099.98px]:pl-10`;
+
+/* Image-left variant: the media pane comes first and carries no left pad — except
+   below 1100px, where the tablet `.card` rule sat after `.cardReverse` in the
+   stylesheet and put the 40px left pad back. Reproduced deliberately. */
+const CARD_REVERSE =
+  `${CARD_COMMON} flex-row-reverse gap-[72px] pl-0 pr-14 ` +
+  "max-[1099.98px]:gap-10 max-[1099.98px]:pl-10 max-[1099.98px]:pr-10";
+
+/* Media pane: square-ish, background plate with the product card on top. */
+const MEDIA =
+  "relative flex items-center justify-center overflow-hidden aspect-[0.981172] " +
+  "w-px max-w-[470px] flex-[1_0_0] " +
+  "max-[767.98px]:aspect-[1.4] max-[767.98px]:w-full max-[767.98px]:flex-none";
+
+// `.cardReverse .media` outranked the phone-width `.media` rule, so the reverse
+// pane keeps its fixed 541px box at every width. Reproduced deliberately.
+const MEDIA_REVERSE =
+  "relative flex items-center justify-center overflow-hidden aspect-auto " +
+  "min-h-[478px] w-[541px] max-w-none flex-[0_0_541px] self-stretch";
 
 export default function SolutionsSection() {
   const listRef = useRef<HTMLDivElement>(null);
@@ -55,45 +90,73 @@ export default function SolutionsSection() {
   }, []);
 
   return (
-    <section className={styles.section} id="mock">
-      <div className={styles.container}>
-        <div className={`reveal ${styles.title}`} style={{ "--reveal-y": "70px" } as CSSProperties}>
-          <h2 className="heading">
-            {solutions.title}
-          </h2>
+    <section className="flex justify-center px-[30px] pb-0 pt-[110px]" id="mock">
+      <div className="flex w-full max-w-[1200px] flex-col items-center gap-16">
+        <div
+          className="reveal pointer-events-none sticky top-[112px] z-[1] w-full text-center max-[767.98px]:static"
+          style={{ "--reveal-y": "70px" } as CSSProperties}
+        >
+          <h2 className={HEADING}>{solutions.title}</h2>
         </div>
 
-        <div className={styles.list} ref={listRef}>
-          {solutions.cards.map((card, index) => (
-            <article
-              key={card.bg}
-              className={`${styles.card} ${card.imageSide === "left" ? styles.cardReverse : ""}`}
-              style={{ zIndex: index + 1 }}
-            >
-              <div className={styles.copy}>
-                <div className={styles.heads}>
-                  <h3>{card.title}</h3>
-                  <p>{card.body}</p>
+        <div
+          className="relative z-[2] flex w-full max-w-[1044px] flex-col items-center gap-6 pb-0"
+          ref={listRef}
+        >
+          {solutions.cards.map((card, index) => {
+            const reverse = card.imageSide === "left";
+            const top = STACK_TOP_CLASS[index] ?? STACK_TOP_CLASS[STACK_TOP_CLASS.length - 1];
+
+            return (
+              <article
+                key={card.bg}
+                className={`${reverse ? CARD_REVERSE : CARD} ${top}`}
+                style={{ zIndex: index + 1 }}
+              >
+                <div className="flex w-px max-w-[375px] flex-[1_0_0] flex-col items-start gap-8 max-[1099.98px]:max-w-[320px] max-[767.98px]:w-full max-[767.98px]:max-w-none max-[767.98px]:flex-none">
+                  <div className="flex flex-col gap-4">
+                    <h3 className="text-[36px] font-medium leading-[1.4] tracking-[-1px] max-[1199.98px]:text-[30px] max-[1199.98px]:tracking-[-0.6px]">
+                      {card.title}
+                    </h3>
+                    <p className="whitespace-pre-line text-[18px] leading-[1.7] text-muted">{card.body}</p>
+                  </div>
+
+                  <div className="flex flex-col gap-3">
+                    {card.bullets.map((bullet) => (
+                      <p
+                        className="flex items-center gap-2.5 text-[16px] font-normal leading-[1.7]"
+                        key={bullet}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          className="h-[18px] w-[18px] flex-none"
+                          src="/assets/tick.svg"
+                          alt=""
+                          width={18}
+                          height={18}
+                        />
+                        {bullet}
+                      </p>
+                    ))}
+                  </div>
                 </div>
 
-                <div className={styles.checks}>
-                  {card.bullets.map((bullet) => (
-                    <p className={styles.check} key={bullet}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/assets/tick.svg" alt="" width={18} height={18} />
-                      {bullet}
-                    </p>
-                  ))}
+                <div className={reverse ? MEDIA_REVERSE : MEDIA}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="absolute inset-0 h-full w-full object-cover"
+                    src={card.bg}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                  <div
+                    className="relative aspect-[1.87766] w-[75%] rounded-2xl border-[1px] border-[color:rgba(59,59,59,0.08)] bg-white [box-shadow:0_18px_54px_rgba(0,0,0,0.08)]"
+                    aria-label={`${card.title} preview placeholder`}
+                  />
                 </div>
-              </div>
-
-              <div className={styles.media}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className={styles.mediaBg} src={card.bg} alt="" aria-hidden="true" />
-                <div className={styles.mediaCard} aria-label={`${card.title} preview placeholder`} />
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

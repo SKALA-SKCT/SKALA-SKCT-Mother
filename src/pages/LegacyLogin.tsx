@@ -3,6 +3,18 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth';
 import AuthShell from '../components/AuthShell';
 import { goAfterLogin, isAbsolute } from '../nav';
+import {
+  AUTH_BOX,
+  AUTH_ERR,
+  AUTH_INPUT,
+  BTN_BLOCK,
+  BTN_PRIMARY,
+  FIELD,
+  FIELD_LABEL,
+  SEGMENT,
+  SEGMENT_INPUT,
+  SEGMENTED,
+} from '../authStyles';
 
 const SERVICES = [
   { key: 'auto', label: '자동' },
@@ -52,13 +64,14 @@ export default function LegacyLogin() {
       backTo="/login"
       backLabel="카카오 로그인으로"
     >
-      <form className="auth-box" onSubmit={submit}>
-        <div className="field">
-          <div className="field-label">서비스 계정</div>
-          <div className="segmented">
+      <form className={AUTH_BOX} onSubmit={submit}>
+        <div className={FIELD}>
+          <div className={FIELD_LABEL}>서비스 계정</div>
+          <div className={SEGMENTED}>
             {SERVICES.map((s) => (
-              <label key={s.key} className="segment">
+              <label key={s.key} className={SEGMENT}>
                 <input
+                  className={SEGMENT_INPUT}
                   type="radio"
                   name="service"
                   checked={service === s.key}
@@ -70,9 +83,10 @@ export default function LegacyLogin() {
           </div>
         </div>
 
-        <label className="field">
-          <span className="field-label">아이디</span>
+        <label className={FIELD}>
+          <span className={FIELD_LABEL}>아이디</span>
           <input
+            className={AUTH_INPUT}
             placeholder="아이디를 입력하세요"
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
@@ -81,9 +95,10 @@ export default function LegacyLogin() {
             maxLength={40}
           />
         </label>
-        <label className="field">
-          <span className="field-label">비밀번호</span>
+        <label className={FIELD}>
+          <span className={FIELD_LABEL}>비밀번호</span>
           <input
+            className={AUTH_INPUT}
             type="password"
             placeholder="비밀번호를 입력하세요"
             value={password}
@@ -91,8 +106,12 @@ export default function LegacyLogin() {
             autoComplete="current-password"
           />
         </label>
-        {err && <div className="auth-err">{err}</div>}
-        <button className="btn primary block" disabled={busy || !canSubmit} type="submit">
+        {err && <div className={AUTH_ERR}>{err}</div>}
+        <button
+          className={`${BTN_PRIMARY} ${BTN_BLOCK}`}
+          disabled={busy || !canSubmit}
+          type="submit"
+        >
           {busy ? '로그인 중…' : '로그인'}
         </button>
       </form>

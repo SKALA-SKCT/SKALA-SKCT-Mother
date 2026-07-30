@@ -2,6 +2,23 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import DesktopOnly from '../landing/DesktopOnly';
 import BrandMark from './BrandMark';
+import {
+  AUTH_CARD,
+  AUTH_FORM_PANEL,
+  AUTH_FORM_PANEL_CENTERED,
+  AUTH_LEDE,
+  AUTH_PANEL,
+  AUTH_PANEL_BG,
+  AUTH_PANEL_CAPTION,
+  AUTH_PANEL_HEAD,
+  AUTH_PANEL_HOME,
+  AUTH_PANEL_SCRIM,
+  AUTH_PANEL_TOP,
+  AUTH_SHELL,
+  authBody,
+  authBrand,
+  authTitle,
+} from '../authStyles';
 
 type Props = {
   title: string;
@@ -24,30 +41,30 @@ export default function AuthShell({
 }: Props) {
   return (
     <>
-      <main className="auth-shell">
-        <div className="auth-card">
-          <section className="auth-panel">
-            <img className="auth-panel-bg" src="/assets/growth-bg.png" alt="" aria-hidden="true" />
-            <div className="auth-panel-scrim" aria-hidden="true" />
+      <main className={AUTH_SHELL}>
+        <div className={AUTH_CARD}>
+          <section className={AUTH_PANEL}>
+            <img className={AUTH_PANEL_BG} src="/assets/growth-bg.png" alt="" aria-hidden="true" />
+            <div className={AUTH_PANEL_SCRIM} aria-hidden="true" />
 
-            <div className="auth-panel-top">
-              <Link className="auth-panel-home" to={backTo}>
+            <div className={AUTH_PANEL_TOP}>
+              <Link className={AUTH_PANEL_HOME} to={backTo}>
                 <span aria-hidden="true">←</span>
                 {backLabel}
               </Link>
-              <p className="auth-panel-head">지금 로그인하고 SKCT 학습을 시작하세요.</p>
+              <p className={AUTH_PANEL_HEAD}>지금 로그인하고 SKCT 학습을 시작하세요.</p>
             </div>
-            <p className="auth-panel-caption">SKALA SKCT Practice Platform</p>
+            <p className={AUTH_PANEL_CAPTION}>SKALA SKCT Practice Platform</p>
           </section>
 
-          <section className={`auth-form-panel${centered ? ' auth-form-panel-centered' : ''}`}>
+          <section className={centered ? AUTH_FORM_PANEL_CENTERED : AUTH_FORM_PANEL}>
             {helpContent}
-            <Link className="auth-brand" to="/" aria-label="SKALA-SKCT 홈">
+            <Link className={authBrand(centered)} to="/" aria-label="SKALA-SKCT 홈">
               <BrandMark height={centered ? 26 : 20} />
             </Link>
-            <h1 className="auth-title">{title}</h1>
-            {lede ? <p className="auth-lede">{lede}</p> : null}
-            <div className="auth-body">{children}</div>
+            <h1 className={authTitle(centered)}>{title}</h1>
+            {lede ? <p className={AUTH_LEDE}>{lede}</p> : null}
+            <div className={authBody(centered)}>{children}</div>
           </section>
         </div>
       </main>

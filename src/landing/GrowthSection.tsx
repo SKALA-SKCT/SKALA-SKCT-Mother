@@ -3,7 +3,21 @@
 import type { CSSProperties } from "react";
 import { useEffect, useRef } from "react";
 import { growth } from "./content";
-import styles from "./GrowthSection.module.css";
+import { HEADING } from "../styleTokens";
+
+/* Reference: section padding 64px 30px 0, container gap 64, card row
+   max-width 1040 / gap 24, cards radius 16 with padding 57/95/57/54. */
+const ASSIST_CARD =
+  "relative flex min-h-[620px] w-full flex-col items-start justify-between overflow-hidden " +
+  "rounded-2xl pb-[57px] pl-[54px] pr-[95px] pt-[57px] text-inverse " +
+  "max-[1199.98px]:min-h-[580px] max-[1199.98px]:pr-16 " +
+  "max-[767.98px]:min-h-[520px] max-[767.98px]:px-6 max-[767.98px]:py-9";
+
+/* Keeps both copies on their own composited layer, so swapping which one is
+   visible can't drop a frame while the card hands over to the backdrop. */
+const ASSIST_BG =
+  "absolute inset-0 h-full w-full object-cover object-center " +
+  "[will-change:opacity] [backface-visibility:hidden]";
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -90,36 +104,51 @@ export default function GrowthSection() {
   }, []);
 
   return (
-    <section className={styles.section} id="features">
-      <div className={styles.expandLayer} ref={layerRef} aria-hidden="true">
+    <section
+      className="flex justify-center overflow-hidden px-[30px] pb-0 pt-[180px] max-[1199.98px]:pt-[128px]"
+      id="features"
+    >
+      {/* Hand-off to the next section: the copy fades with scroll and this layer
+          grows out of the card box into the page background. Geometry is written
+          inline per frame, so it must not be transitioned. */}
+      <div
+        className="pointer-events-none fixed left-0 top-0 z-[-1] h-0 w-0 overflow-hidden opacity-0 [will-change:opacity,width,height,top,left]"
+        ref={layerRef}
+        aria-hidden="true"
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.assistBg} src="/assets/growth-bg.png" alt="" />
+        <img className={ASSIST_BG} src="/assets/growth-bg.png" alt="" />
       </div>
 
-      <div className={styles.container}>
-        <h2 className="heading reveal">{growth.title}</h2>
+      <div className="flex w-full max-w-[1200px] flex-col items-center gap-16">
+        <h2 className={`reveal ${HEADING}`}>{growth.title}</h2>
 
-        <div className={styles.row}>
+        <div className="flex w-full max-w-[1200px] items-center max-[1199.98px]:max-w-full">
           <article
-            className={`reveal ${styles.card} ${styles.assist}`}
+            className={`reveal ${ASSIST_CARD}`}
             style={{ "--reveal-y": "140px" } as CSSProperties}
             ref={cardRef}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className={styles.assistBg} src="/assets/growth-bg.png" alt="" aria-hidden="true" ref={bgRef} />
+            <img className={ASSIST_BG} src="/assets/growth-bg.png" alt="" aria-hidden="true" ref={bgRef} />
 
-            <div className={styles.assistTop}>
-              <p className={styles.tag}>
+            <div className="relative flex w-full max-w-[460px] flex-col items-start gap-[14px] opacity-[var(--copy-fade,1)]">
+              <p className="flex items-center gap-2 text-[20px] font-medium tracking-[-0.01em] max-[767.98px]:text-[18px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/assets/growth-icon.svg" alt="" width={32} height={32} />
                 {growth.assist.eyebrow}
               </p>
-              <h3 className={styles.assistHeadline}>{growth.assist.headline}</h3>
+              <h3 className="whitespace-pre-line text-[32px] font-medium leading-[1.4] tracking-[-1.7px] max-[1199.98px]:text-[30px] max-[767.98px]:text-[30px]">
+                {growth.assist.headline}
+              </h3>
             </div>
 
-            <div className={styles.bubbles}>
+            <div className="relative flex w-full max-w-[860px] flex-col items-end self-end gap-3 opacity-[var(--copy-fade,1)] max-[767.98px]:max-w-none max-[767.98px]:items-start max-[767.98px]:self-stretch">
               {growth.assist.prompts.map((prompt) => (
-                <span className={styles.bubble} key={prompt}>
+                <span
+                  className="rounded-[26px] bg-surface px-6 py-[9px] text-[20px] font-normal leading-[1.7] text-ink"
+                  key={prompt}
+                >
                   {prompt}
                 </span>
               ))}
