@@ -2,6 +2,7 @@ import BrandMark from "./BrandMark";
 import { nav } from "./content";
 import { CONTAINER } from "../styleTokens";
 import { useAuth } from "../auth";
+import { useState } from "react";
 
 /* Follows the scene dimming set by DataPlatformSection. The `body.scene-dark`
    variants override the ink tokens on the header itself, so no other section is
@@ -26,6 +27,7 @@ const LOGIN =
 
 export default function SiteHeader() {
   const { user, loading, logout } = useAuth();
+  const [accountOpen, setAccountOpen] = useState(false);
 
   return (
     <header className={HEADER}>
@@ -52,12 +54,48 @@ export default function SiteHeader() {
 
         <div className="flex items-center justify-self-end gap-[18px] text-[16px] font-normal max-[900px]:gap-3">
           {!loading && user ? (
-            <>
-              <span className="whitespace-nowrap text-ink">{user.nick}님</span>
-              <button className={LOGIN} type="button" onClick={logout}>
-                로그아웃
+            <div
+              className="group relative max-[900px]:hidden"
+              onMouseEnter={() => setAccountOpen(true)}
+              onMouseLeave={() => setAccountOpen(false)}
+            >
+              <button
+                className={LOGIN}
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded={accountOpen}
+                onClick={() => setAccountOpen((open) => !open)}
+              >
+                {user.nick}님
               </button>
-            </>
+              <div
+                className={`absolute right-0 top-[calc(100%+8px)] z-[70] min-w-[132px] rounded-[12px] border border-black/10 bg-white p-1 text-[14px] text-[#202020] shadow-[0_14px_32px_rgba(0,0,0,0.14)] transition ${
+                  accountOpen
+                    ? "visible translate-y-0 opacity-100"
+                    : "invisible -translate-y-1 opacity-0"
+                }`}
+                role="menu"
+              >
+                <button
+                  className="block w-full rounded-[9px] px-3 py-2 text-left hover:bg-black/[0.04]"
+                  type="button"
+                  role="menuitem"
+                  onClick={logout}
+                >
+                  로그아웃
+                </button>
+                <button
+                  className="block w-full cursor-default rounded-[9px] px-3 py-2 text-left text-[#9a9a9a]"
+                  type="button"
+                  role="menuitem"
+                  tabIndex={-1}
+                  aria-disabled="true"
+                  onClick={(event) => event.preventDefault()}
+                >
+                  회원탈퇴
+                </button>
+              </div>
+            </div>
           ) : (
             <a className={LOGIN} href={nav.login.href}>
               {nav.login.label}
