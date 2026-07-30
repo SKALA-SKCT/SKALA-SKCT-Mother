@@ -1,229 +1,241 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------
+   Design tokens — SKALA-SKCT landing
+   --------------------------------------------------------------- */
 :root {
-  --bg: #f6f7f9;
+  /* surface */
+  --bg: #f7f7f5;
   --surface: #ffffff;
-  --surface-2: #f0f2f5;
-  --border: #e2e5ea;
-  --text: #1a1d23;
-  --muted: #6b7280;
-  --primary: #2f6bff;
-  --primary-text: #ffffff;
+  --surface-sunken: #f4f4f2;
+
+  /* ink */
+  --ink: #202020;
+  --ink-muted: #686868;
+  --ink-faint: #9a9a97;
+  --ink-inverse: #ffffff;
+
+  /* accent */
+  --accent: #ff3c00;
+  --accent-soft: #ffe9e1;
+  --sk-red: #ea002c;
+  --lime: #c8eb2d;
+  --kakao: #fee500;
+  --kakao-text: #191919;
   --danger: #e5484d;
   --ok: #2fa84f;
-  --kakao: #fee500;
-  --kakao-text: #191600;
-  --radius: 10px;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  color-scheme: light dark;
+
+  /* lines & shadows */
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 18px 40px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 40px 90px rgba(0, 0, 0, 0.1);
+
+  /* radii */
+  --r-sm: 11px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 40px;
+  --r-pill: 100px;
+
+  /* layout */
+  --container: 1200px;
+  --gutter: 24px;
+  --section-gap: 120px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0f1115;
-    --surface: #171a21;
-    --surface-2: #1f232c;
-    --border: #2a2f3a;
-    --text: #e7e9ee;
-    --muted: #9aa1ad;
-    --primary: #4c82ff;
-    --danger: #ff6369;
-    --ok: #46c46a;
-    --shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+/* ---------------------------------------------------------------
+   Reset
+   --------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.7;
+  /* Every reference preset enables these Inter alternates. */
+  font-feature-settings:
+    "blwf" 1,
+    "cv09" 1,
+    "cv03" 1,
+    "cv04" 1,
+    "cv11" 1;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------------------------------------------------------------
+   Desktop-only gate — every section is composed against the 1200px container,
+   and below that the two-column layouts fall back to a stacked tablet layout
+   that this content was never designed for. So the cutoff is the container
+   width, not a device guess. CSS-only: no JS, no hydration mismatch.
+   --------------------------------------------------------------- */
+@media (max-width: 1199.98px) {
+  /* !important because the section roots set their own `display` from CSS
+     modules, which outranks this element selector. */
+  body > header,
+  body > main,
+  body > footer,
+  #root > header,
+  #root > main,
+  #root > footer {
+    display: none !important;
+  }
+
+  body > [data-desktop-gate],
+  #root > [data-desktop-gate] {
+    display: flex;
   }
 }
 
-* {
-  box-sizing: border-box;
-}
-html,
-body {
-  margin: 0;
-  padding: 0;
-}
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', Roboto,
-    sans-serif;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-}
+/* ---------------------------------------------------------------
+   Element defaults
+   --------------------------------------------------------------- */
 h1,
 h2,
-h3 {
-  line-height: 1.25;
-}
-a {
-  color: var(--primary);
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-.page {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-.container {
-  width: 100%;
-  max-width: 920px;
-  margin: 0 auto;
-}
-.muted {
-  color: var(--muted);
-}
-.center {
-  text-align: center;
-}
-
-/* 카드 그리드(랜딩) */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
-  margin-top: 24px;
-}
-.card {
-  display: block;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 22px;
-  color: inherit;
-  transition: transform 0.08s ease, border-color 0.12s ease;
-}
-.card:hover {
-  text-decoration: none;
-  transform: translateY(-2px);
-  border-color: var(--primary);
-}
-.card h3 {
-  margin: 0 0 6px;
-}
-.card p {
+h3,
+h4,
+p,
+figure,
+ul,
+ol {
   margin: 0;
-  color: var(--muted);
-  font-size: 0.92rem;
 }
 
-/* 인증 박스 */
-.auth-box {
-  width: 100%;
-  max-width: 380px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.auth-box h1 {
-  margin: 0;
-  font-size: 1.35rem;
-}
-.auth-box input {
-  width: 100%;
-  padding: 11px 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-2);
-  color: var(--text);
-  font-size: 0.98rem;
-}
-.auth-box input:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: -1px;
-}
-.auth-err {
-  color: var(--danger);
-  font-size: 0.88rem;
-}
-.auth-ok {
-  color: var(--ok);
-  font-size: 0.88rem;
-}
-
-/* 버튼 */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 11px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-2);
-  color: var(--text);
-  font-size: 0.98rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-}
-.btn:hover {
-  text-decoration: none;
-  filter: brightness(0.98);
-}
-.btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-.btn.primary {
-  background: var(--primary);
-  color: var(--primary-text);
-  border-color: transparent;
-}
-.btn.block {
-  width: 100%;
-}
-.btn.kakao {
-  background: var(--kakao);
-  color: var(--kakao-text);
-  border-color: transparent;
-}
-.linklike {
-  background: none;
-  border: none;
-  color: var(--primary);
-  cursor: pointer;
-  font: inherit;
+ul,
+ol {
   padding: 0;
-}
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--muted);
-  font-size: 0.82rem;
-  margin: 4px 0;
-}
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
+  list-style: none;
 }
 
-.stack {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+a {
+  color: inherit;
+  text-decoration: none;
 }
-.row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
 }
-.field-label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: 4px;
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------------------------------------------------------------
+   Scroll-in reveal
+   ---------------------------------------------------------------
+   Kept as global CSS rather than Tailwind utilities: the hidden state is gated on
+   a `:root[data-reveal="on"]` attribute set by ScrollReveal and toggled per
+   element by an `is-visible` class, which no utility can express. The scene
+   inversion that pairs with it (`body.scene-dark`) lives on the components that
+   react to it — see SiteHeader and DataPlatformSection.
+
+   ScrollReveal sets the attribute after mounting, so nothing can get stuck
+   invisible if scripting never runs. */
+:root[data-reveal="on"] .reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 56px));
+}
+
+:root[data-reveal="on"] .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 1.05s cubic-bezier(0.18, 0.72, 0.18, 1),
+    transform 1.15s cubic-bezier(0.16, 0.82, 0.18, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Background plates scale up as they arrive, like the reference. */
+:root[data-reveal="on"] .reveal-scale {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+:root[data-reveal="on"] .reveal-scale.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--reveal-scale-opacity-duration, 1.05s) ease,
+    transform var(--reveal-scale-transform-duration, 1.2s) cubic-bezier(0.16, 0.82, 0.18, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Product tiles ease up into place. */
+:root[data-reveal="on"] .reveal-tile {
+  opacity: 0;
+  transform: scale(0.9) translateY(40px);
+}
+
+:root[data-reveal="on"] .reveal-tile.is-visible {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.95s ease,
+    transform 1.05s cubic-bezier(0.16, 0.82, 0.18, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  :root[data-reveal="on"] .reveal,
+  :root[data-reveal="on"] .reveal-tile,
+  :root[data-reveal="on"] .reveal-scale {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes welcome-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Referenced from FaqSection via an `[animation:…]` utility. Kept here rather
+   than in the Tailwind config because the delay comes from a per-item CSS var,
+   which has to ride along in the shorthand to avoid being reset. */
+@keyframes faq-rise {
+  from {
+    opacity: 0;
+    transform: translateY(72px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
