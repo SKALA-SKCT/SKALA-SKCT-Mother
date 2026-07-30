@@ -18,7 +18,7 @@ const NAV_LINK = "text-ink [transition:color_0.25s_ease] hover:text-skRed";
 
 /** 아직 열리지 않은 메뉴. `button { font: inherit; color: inherit }`가 index.css에
     있어 링크와 같은 타이포로 렌더된다. */
-const showPending = () => window.alert("준비중입니다!");
+const showPending = () => window.alert("서비스 준비 중입니다!");
 
 const LOGIN =
   "inline-flex min-h-[38px] items-center justify-center rounded-[10px] bg-ink px-[18px] py-[6px] " +
