@@ -12,4 +12,3 @@ dist-ssr
 .env.production
 
 .env
-.vercel
