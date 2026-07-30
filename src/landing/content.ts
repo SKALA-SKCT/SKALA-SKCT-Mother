@@ -6,6 +6,8 @@
 const motherUrl = import.meta.env.VITE_MOTHER_URL ?? "https://skala-skct.com";
 const skctUrl = import.meta.env.VITE_MOCK_URL ?? "https://mock.skala-skct.com";
 const skalaUrl = import.meta.env.VITE_PRACTICE_URL ?? "https://practice.skala-skct.com";
+export type NavLink = { label: string; href?: string; pending?: boolean };
+
 
 export const nav = {
   links: [
