@@ -35,7 +35,7 @@ export default function SiteHeader() {
       <div
         className={`${CONTAINER} grid h-[68px] grid-cols-[1fr_auto_1fr] items-center gap-6 max-[900px]:h-auto max-[900px]:grid-cols-[1fr_auto] max-[900px]:py-[18px]`}
       >
-        <a className="justify-self-start" href="#top" aria-label="SKALA-SKCT 홈">
+        <a className="flex items-center justify-self-start" href="#top" aria-label="SKALA-SKCT 홈">
           <BrandMark />
         </a>
 
