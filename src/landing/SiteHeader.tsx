@@ -15,6 +15,7 @@ const HEADER =
   "[body.scene-dark_&]:[--ink:#f5f5f3] [body.scene-dark_&]:[--ink-inverse:#131313]";
 
 const NAV_LINK = "text-ink [transition:color_0.25s_ease] hover:text-skRed";
+const ACTIVE_NAV_LINK = "text-skRed";
 
 /** 아직 열리지 않은 메뉴. `button { font: inherit; color: inherit }`가 index.css에
     있어 링크와 같은 타이포로 렌더된다. */
@@ -45,7 +46,12 @@ export default function SiteHeader() {
                 {link.label}
               </button>
             ) : (
-              <a className={NAV_LINK} key={link.label} href={link.href}>
+              <a
+                className={`${NAV_LINK} ${link.label === "홈" ? ACTIVE_NAV_LINK : ""}`}
+                key={link.label}
+                href={link.href}
+                aria-current={link.label === "홈" ? "page" : undefined}
+              >
                 {link.label}
               </a>
             ),
