@@ -11,7 +11,7 @@ function json401(): Response {
 }
 
 // 미인증 허용(로그인 전에 호출되는) 경로.
-const OPEN = ['/api/auth/kakao/', '/api/auth/legacy-login', '/api/auth/logout'];
+const OPEN = ['/api/auth/kakao/', '/api/auth/legacy-login', '/api/auth/logout', '/api/auth/handoff/start'];
 
 export async function onRequest(context: any): Promise<Response> {
   const { request, env, next } = context;
