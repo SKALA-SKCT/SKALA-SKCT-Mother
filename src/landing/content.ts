@@ -12,7 +12,7 @@ export type NavLink = { label: string; href?: string; pending?: boolean };
 const navLinks: NavLink[] = [
   { label: "실전 모의고사", href: skctUrl },
   { label: "모의고사 문제 연습", href: skalaUrl },
-  { label: "유형별 문제 연습", href: "#types" },
+  { label: "유형별 문제 연습", pending: true },
 ];
 
 export const nav = {
