@@ -3,9 +3,10 @@
  * 레이아웃은 기존 템플릿 구조를 유지하고, 콘텐츠는 SKCT 학습 서비스로 구성한다.
  */
 
-const motherUrl = import.meta.env.VITE_MOTHER_URL ?? "https://skala-skct.com";
+const motherUrl = import.meta.env.VITE_MOTHER_URL ?? "https://www.skala-skct.com";
 const skctUrl = import.meta.env.VITE_MOCK_URL ?? "https://mock.skala-skct.com";
 const skalaUrl = import.meta.env.VITE_PRACTICE_URL ?? "https://practice.skala-skct.com";
+
 export type NavLink = { label: string; href?: string; pending?: boolean };
 
 const navLinks: NavLink[] = [

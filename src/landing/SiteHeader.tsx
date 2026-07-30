@@ -69,31 +69,33 @@ export default function SiteHeader() {
                 {user.nick}님
               </button>
               <div
-                className={`absolute right-0 top-[calc(100%+8px)] z-[70] min-w-[132px] rounded-[12px] border border-black/10 bg-white p-1 text-[14px] text-[#202020] shadow-[0_14px_32px_rgba(0,0,0,0.14)] transition ${
+                className={`absolute right-0 top-full z-[70] min-w-[132px] pt-2 text-[14px] text-[#202020] transition ${
                   accountOpen
                     ? "visible translate-y-0 opacity-100"
                     : "invisible -translate-y-1 opacity-0"
                 }`}
                 role="menu"
               >
-                <button
-                  className="block w-full rounded-[9px] px-3 py-2 text-left hover:bg-black/[0.04]"
-                  type="button"
-                  role="menuitem"
-                  onClick={logout}
-                >
-                  로그아웃
-                </button>
-                <button
-                  className="block w-full cursor-default rounded-[9px] px-3 py-2 text-left text-[#9a9a9a]"
-                  type="button"
-                  role="menuitem"
-                  tabIndex={-1}
-                  aria-disabled="true"
-                  onClick={(event) => event.preventDefault()}
-                >
-                  회원탈퇴
-                </button>
+                <div className="rounded-[12px] border border-black/10 bg-white p-1 shadow-[0_14px_32px_rgba(0,0,0,0.14)]">
+                  <button
+                    className="block w-full rounded-[9px] px-3 py-2 text-left hover:bg-black/[0.04]"
+                    type="button"
+                    role="menuitem"
+                    onClick={logout}
+                  >
+                    로그아웃
+                  </button>
+                  <button
+                    className="block w-full cursor-default rounded-[9px] px-3 py-2 text-left text-[#9a9a9a]"
+                    type="button"
+                    role="menuitem"
+                    tabIndex={-1}
+                    aria-disabled="true"
+                    onClick={(event) => event.preventDefault()}
+                  >
+                    회원탈퇴
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
