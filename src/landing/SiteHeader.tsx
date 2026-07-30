@@ -13,6 +13,12 @@ const HEADER =
   "[body.scene-dark_&]:bg-transparent [body.scene-dark_&]:[backdrop-filter:none] " +
   "[body.scene-dark_&]:[--ink:#f5f5f3] [body.scene-dark_&]:[--ink-inverse:#131313]";
 
+const NAV_LINK = "text-ink [transition:color_0.25s_ease] hover:text-skRed";
+
+/** 아직 열리지 않은 메뉴. `button { font: inherit; color: inherit }`가 index.css에
+    있어 링크와 같은 타이포로 렌더된다. */
+const showPending = () => window.alert("준비중입니다!");
+
 const LOGIN =
   "inline-flex min-h-[38px] items-center justify-center rounded-[10px] bg-ink px-[18px] py-[6px] " +
   "leading-[1.7] text-inverse [transition:background-color_0.25s_ease,transform_0.25s_ease] " +
@@ -31,15 +37,17 @@ export default function SiteHeader() {
         </a>
 
         <nav className="flex items-center gap-[34px] text-[16px] font-normal leading-[1.7] max-[900px]:hidden">
-          {nav.links.map((link) => (
-            <a
-              className="text-ink [transition:color_0.25s_ease] hover:text-skRed"
-              key={link.href}
-              href={link.href}
-            >
-              {link.label}
-            </a>
-          ))}
+          {nav.links.map((link) =>
+            link.pending ? (
+              <button className={NAV_LINK} key={link.label} type="button" onClick={showPending}>
+                {link.label}
+              </button>
+            ) : (
+              <a className={NAV_LINK} key={link.label} href={link.href}>
+                {link.label}
+              </a>
+            ),
+          )}
         </nav>
 
         <div className="flex items-center justify-self-end gap-[18px] text-[16px] font-normal max-[900px]:gap-3">

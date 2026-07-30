@@ -5,13 +5,17 @@
 
 const motherUrl = import.meta.env.VITE_MOTHER_URL ?? "https://skala-skct.com";
 const skctUrl = import.meta.env.VITE_MOCK_URL ?? "https://mock.skala-skct.com";
+const practiceUrl = import.meta.env.VITE_PRACTICE_URL ?? "https://skala-skct.pages.dev";
+
+/** `pending`인 항목은 이동하지 않고 준비중 안내만 띄운다. */
+export type NavLink = { label: string; href?: string; pending?: boolean };
 
 export const nav = {
   links: [
     { label: "실전 모의고사", href: skctUrl },
-    { label: "모의고사 문제 연습", href: skctUrl },
-    { label: "유형별 문제 연습", href: "#types" },
-  ],
+    { label: "모의고사 문제 연습", href: practiceUrl },
+    { label: "유형별 문제 연습", pending: true },
+  ] as ReadonlyArray<NavLink>,
   login: { label: "시작하기", href: "/login" },
 };
 
