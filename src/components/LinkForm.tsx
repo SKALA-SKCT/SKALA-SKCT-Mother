@@ -4,19 +4,13 @@ import { useState, type FormEvent } from 'react';
 // 설정(Settings)과 가입 직후 통합 마법사(LinkWizard)에서 공용으로 쓴다.
 export default function LinkForm({
   service,
-  label,
   title,
-  body,
   done,
-  disabled = false,
   onDone,
 }: {
   service: 'skct' | 'skala';
-  label?: string;
   title: string;
-  body?: string;
   done: boolean;
-  disabled?: boolean;
   onDone: () => Promise<void> | void;
 }) {
   const [nickname, setNickname] = useState('');
@@ -42,49 +36,36 @@ export default function LinkForm({
       setNickname('');
       setPassword('');
       await onDone();
-      window.alert('기존 계정 연결이 완료되었습니다.');
     } catch (ex) {
-      const message = ex instanceof Error ? ex.message : String(ex);
-      setErr(message);
-      window.alert(message);
+      setErr(ex instanceof Error ? ex.message : String(ex));
     } finally {
       setBusy(false);
     }
   };
 
   return (
-    <form className={`welcome-panel${done ? ' is-connected' : ''}`} onSubmit={submit}>
-      <div className="welcome-panel-top">
-        <span>{label ?? (service === 'skct' ? '실전 모의고사' : '모의고사 문제 연습')}</span>
-        <small>{done ? '연결 완료' : '미연결'}</small>
+    <form className="auth-box" style={{ maxWidth: 'none', marginTop: 12 }} onSubmit={submit}>
+      <div className="row" style={{ justifyContent: 'space-between' }}>
+        <strong>{title}</strong>
+        {done && <span className="auth-ok">연결됨</span>}
       </div>
-      <h2>{title}</h2>
-      <p>{body ?? (service === 'skct' ? '기존 도메인 : skala-skct.vercel.app/' : '기존 도메인 : skala-skct.pages.dev/')}</p>
-      <div className="welcome-fields">
-        <input
-          placeholder="기존 아이디"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          autoComplete="off"
-          disabled={done || disabled || busy}
-        />
-        <input
-          type="password"
-          placeholder="기존 비밀번호"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          autoComplete="off"
-          disabled={done || disabled || busy}
-        />
-      </div>
+      <input
+        placeholder="기존 아이디"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+        autoComplete="off"
+      />
+      <input
+        type="password"
+        placeholder="기존 비밀번호"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        autoComplete="off"
+      />
       {err && <div className="auth-err">{err}</div>}
       {ok && <div className="auth-ok">{ok}</div>}
-      <button
-        className={`btn block welcome-connect${busy ? ' is-loading' : ''}`}
-        disabled={done || disabled || busy || !nickname.trim() || !password}
-        type="submit"
-      >
-        {busy ? <span className="welcome-loading" aria-label="연결 중" /> : done ? '연결 완료' : '연결하기'}
+      <button className="btn primary" disabled={busy || !nickname.trim() || !password} type="submit">
+        {busy ? '연결 중…' : '가져와서 연결'}
       </button>
     </form>
   );

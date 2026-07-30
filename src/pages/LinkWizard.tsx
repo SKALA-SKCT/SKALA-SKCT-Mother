@@ -1,9 +1,6 @@
 import { Navigate, useSearchParams } from 'react-router-dom';
-import { useState } from 'react';
 import { useAuth } from '../auth';
 import LinkForm from '../components/LinkForm';
-import BrandMark from '../components/BrandMark';
-import DesktopOnly from '../landing/DesktopOnly';
 import { isAbsolute } from '../nav';
 
 // 카카오 가입 직후 1회 표시되는 통합 마법사. 기존 skct/skala 계정을 연결(링크)하면
@@ -12,7 +9,6 @@ export default function LinkWizard() {
   const { user, loading, refresh } = useAuth();
   const [sp] = useSearchParams();
   const next = sp.get('next') || '/';
-  const [noAccount, setNoAccount] = useState(false);
 
   if (loading)
     return (
@@ -30,63 +26,33 @@ export default function LinkWizard() {
     else window.location.assign(next);
   };
 
-  const hasLinkedAccount = !!user.skctUserId || !!user.skalaHandle;
-  const canStart = noAccount || hasLinkedAccount;
-
   return (
-    <>
-      <main className="welcome-shell">
-        <section className="welcome-card" aria-label="카카오 첫 로그인 후 기존 계정 연결">
-          <div className="welcome-head">
-            <BrandMark height={26} />
-            <span className="welcome-badge">첫 카카오 로그인</span>
-          </div>
+    <div className="page">
+      <div className="container" style={{ maxWidth: 560 }}>
+        <h1 style={{ margin: 0 }}>환영합니다, {user.nick}님 👋</h1>
+        <p className="muted">
+          모의고사·연습앱에 <strong>기존 계정</strong>이 있다면 지금 연결하세요. 기존 아이디·비밀번호로 한 번만
+          확인하면 <strong>기존 기록을 그대로 이어서</strong> 쓸 수 있어요. 없으면 건너뛰어도 됩니다.
+        </p>
 
-          <div className="welcome-copy">
-            <p className="welcome-kicker">환영합니다, {user.nick}님</p>
-            <h1>기존 학습 기록을 이어서 사용할까요?</h1>
-            <div className="welcome-copy-row">
-              <p>기존 서비스 계정이 있다면 처음 한 번만 인증해 연결해주세요!</p>
-              <label className="welcome-check">
-                <input type="checkbox" checked={noAccount} onChange={(event) => setNoAccount(event.target.checked)} />
-                <span>기존 계정이 없어요</span>
-              </label>
-            </div>
-          </div>
+        {user.isKakao ? (
+          <>
+            <LinkForm service="skct" title="모의고사(skct) 기존 계정 연결" done={!!user.skctUserId} onDone={refresh} />
+            <LinkForm service="skala" title="연습앱(skala) 기존 계정 연결" done={!!user.skalaHandle} onDone={refresh} />
+          </>
+        ) : (
+          <p className="muted">카카오로 로그인한 계정에서만 기존 계정을 통합할 수 있어요.</p>
+        )}
 
-          {user.isKakao ? (
-            <div className="welcome-grid">
-              <LinkForm
-                service="skct"
-                label="실전 모의고사"
-                title="실전 모의고사 기존 계정 연결"
-                body="기존 도메인 : skala-skct.vercel.app/"
-                done={!!user.skctUserId}
-                disabled={noAccount}
-                onDone={refresh}
-              />
-              <LinkForm
-                service="skala"
-                label="모의고사 문제 연습"
-                title="모의고사 문제 연습 기존 계정 연결"
-                body="기존 도메인 : skala-skct.pages.dev/"
-                done={!!user.skalaHandle}
-                disabled={noAccount}
-                onDone={refresh}
-              />
-            </div>
-          ) : (
-            <p className="muted">카카오로 로그인한 계정에서만 기존 계정을 통합할 수 있어요.</p>
-          )}
-
-          <div className="welcome-actions">
-            <button className="btn primary" onClick={goNext} disabled={!canStart}>
-              완료하고 시작하기
-            </button>
-          </div>
-        </section>
-      </main>
-      <DesktopOnly />
-    </>
+        <div className="row" style={{ marginTop: 16, justifyContent: 'space-between' }}>
+          <button className="linklike" onClick={goNext}>
+            나중에 하기
+          </button>
+          <button className="btn primary" onClick={goNext}>
+            완료하고 시작
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
