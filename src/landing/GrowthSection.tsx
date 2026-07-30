@@ -28,6 +28,8 @@ const GROW_START = 0.88;
 const GROW_VIEWPORTS = 0.4;
 /** Dead zone before the card hands its gradient to the growing backdrop. */
 const EPS = 0.004;
+/** Backdrop opacity at which the inverted ink is released on the way out. */
+const INK_FLIP = 0.48;
 
 export default function GrowthSection() {
   const cardRef = useRef<HTMLElement>(null);
@@ -69,12 +71,15 @@ export default function GrowthSection() {
       layer.style.opacity = String(op);
       bg.style.opacity = live ? "0" : "1";
 
-      // Ink inversion follows the backdrop: on once it covers the header, off
-      // only once the backdrop has fully faded out.
+      // Ink inversion follows the backdrop, and has to come back off at the same
+      // coverage it went on at. Releasing at op <= 0.05 instead left the header ink
+      // light for the whole fade-out, so the wordmark and nav sat light-on-light and
+      // unreadable for a few hundred px of scroll. INK_FLIP sits just below the 0.5
+      // entry point so the two can't chatter at the boundary.
       if (!darkRef.current && p >= 0.5 && fade >= 0.5) {
         darkRef.current = true;
         document.body.classList.add("scene-dark");
-      } else if (darkRef.current && (op <= 0.05 || p <= 0.05)) {
+      } else if (darkRef.current && (op <= INK_FLIP || p <= 0.05)) {
         darkRef.current = false;
         document.body.classList.remove("scene-dark");
       }
