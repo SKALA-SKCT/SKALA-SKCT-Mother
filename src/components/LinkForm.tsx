@@ -44,36 +44,27 @@ export default function LinkForm({
   };
 
   return (
-    <form
-      className="mt-3 flex w-full flex-col gap-3 rounded-[10px] border border-border bg-surface p-7 shadow-soft"
-      onSubmit={submit}
-    >
-      <div className="flex items-center justify-between gap-2">
+    <form className="auth-box" style={{ maxWidth: 'none', marginTop: 12 }} onSubmit={submit}>
+      <div className="row" style={{ justifyContent: 'space-between' }}>
         <strong>{title}</strong>
-        {done && <span className="text-[0.88rem] text-ok">연결됨</span>}
+        {done && <span className="auth-ok">연결됨</span>}
       </div>
       <input
-        className="w-full rounded-lg border border-border bg-surface2 px-3 py-[11px] text-[0.98rem] text-text outline-primary"
         placeholder="기존 아이디"
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
         autoComplete="off"
       />
       <input
-        className="w-full rounded-lg border border-border bg-surface2 px-3 py-[11px] text-[0.98rem] text-text outline-primary"
         type="password"
         placeholder="기존 비밀번호"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         autoComplete="off"
       />
-      {err && <div className="text-[0.88rem] text-danger">{err}</div>}
-      {ok && <div className="text-[0.88rem] text-ok">{ok}</div>}
-      <button
-        className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-transparent bg-primary px-3.5 py-2.5 text-base font-semibold text-white hover:brightness-[0.98] disabled:cursor-not-allowed disabled:opacity-55"
-        disabled={busy || !nickname.trim() || !password}
-        type="submit"
-      >
+      {err && <div className="auth-err">{err}</div>}
+      {ok && <div className="auth-ok">{ok}</div>}
+      <button className="btn primary" disabled={busy || !nickname.trim() || !password} type="submit">
         {busy ? '연결 중…' : '가져와서 연결'}
       </button>
     </form>
