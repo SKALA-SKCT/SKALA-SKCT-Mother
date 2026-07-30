@@ -12,8 +12,8 @@ export default function LinkWizard() {
 
   if (loading)
     return (
-      <div className="page">
-        <p className="muted">불러오는 중…</p>
+      <div className="flex min-h-dvh flex-col items-center justify-center p-6">
+        <p className="text-muted">불러오는 중…</p>
       </div>
     );
   if (!user) {
@@ -27,10 +27,10 @@ export default function LinkWizard() {
   };
 
   return (
-    <div className="page">
-      <div className="container" style={{ maxWidth: 560 }}>
-        <h1 style={{ margin: 0 }}>환영합니다, {user.nick}님 👋</h1>
-        <p className="muted">
+    <div className="flex min-h-dvh flex-col items-center justify-center p-6">
+      <div className="mx-auto w-full max-w-[560px]">
+        <h1 className="m-0 text-4xl font-bold">환영합니다, {user.nick}님 👋</h1>
+        <p className="text-muted">
           모의고사·연습앱에 <strong>기존 계정</strong>이 있다면 지금 연결하세요. 기존 아이디·비밀번호로 한 번만
           확인하면 <strong>기존 기록을 그대로 이어서</strong> 쓸 수 있어요. 없으면 건너뛰어도 됩니다.
         </p>
@@ -41,14 +41,17 @@ export default function LinkWizard() {
             <LinkForm service="skala" title="연습앱(skala) 기존 계정 연결" done={!!user.skalaHandle} onDone={refresh} />
           </>
         ) : (
-          <p className="muted">카카오로 로그인한 계정에서만 기존 계정을 통합할 수 있어요.</p>
+          <p className="text-muted">카카오로 로그인한 계정에서만 기존 계정을 통합할 수 있어요.</p>
         )}
 
-        <div className="row" style={{ marginTop: 16, justifyContent: 'space-between' }}>
-          <button className="linklike" onClick={goNext}>
+        <div className="mt-4 flex items-center justify-between gap-2">
+          <button className="cursor-pointer border-0 bg-transparent p-0 font-inherit text-primary" onClick={goNext}>
             나중에 하기
           </button>
-          <button className="btn primary" onClick={goNext}>
+          <button
+            className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-transparent bg-primary px-3.5 py-2.5 text-base font-semibold text-white hover:brightness-[0.98]"
+            onClick={goNext}
+          >
             완료하고 시작
           </button>
         </div>
