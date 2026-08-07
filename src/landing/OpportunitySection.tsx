@@ -32,30 +32,13 @@ export default function OpportunitySection() {
                 style={{ "--reveal-y": "72px", "--reveal-delay": `${index * 80}ms` } as CSSProperties}
                 key={item.title}
               >
-                {/* Gradient plate with the product tile centred on it. */}
-                <div
-                  className={`relative flex aspect-[1.14607] w-full items-center justify-center overflow-hidden rounded-xl ${TILE_TRANSITION}`}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="absolute inset-0 h-full w-full object-cover"
-                    src="/assets/opp-bg.png"
-                    alt=""
-                    aria-hidden="true"
-                  />
-                  <div
-                    className={`reveal-tile relative flex aspect-[1.35] w-[76%] items-center justify-center overflow-hidden rounded-2xl bg-white ${TILE_TRANSITION} group-hover:[transform:translateY(-10px)_scale(1.03)]`}
-                  >
-                    <div
-                      className="h-full w-full rounded-[inherit] border-[1px] border-[color:rgba(59,59,59,0.08)] bg-white"
-                      aria-label={`${item.title} placeholder`}
-                    />
-                  </div>
+                <div className={`relative flex aspect-[1.14607] w-full items-center justify-center overflow-hidden rounded-xl ${TILE_TRANSITION}`}>
+                  <img className="absolute inset-0 h-full w-full object-cover" src="/assets/opp-bg.png" alt="" aria-hidden="true" />
+                  <div className={`reveal-tile relative flex aspect-[1.35] w-[76%] items-center justify-center overflow-hidden rounded-2xl border border-[color:rgba(59,59,59,0.08)] bg-white ${TILE_TRANSITION} group-hover:[transform:translateY(-10px)_scale(1.03)]`} aria-label={`${item.title} 이미지 영역`} />
                 </div>
-
                 <div className="flex max-w-[430px] flex-col gap-2.5">
                   <h3 className={TITLE}>{item.title}</h3>
-                  <p className="text-[16px] leading-[1.7] text-muted">{item.body}</p>
+                  <p className="whitespace-pre-line text-[16px] leading-[1.7] text-muted">{item.body}</p>
                 </div>
               </article>
             ))}

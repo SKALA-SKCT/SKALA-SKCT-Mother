@@ -29,10 +29,8 @@ const BULLET =
   "before:justify-center before:h-[18px] before:w-[18px] before:rounded-[999px] " +
   "before:bg-[rgba(234,0,44,0.1)] before:text-[11px] before:font-extrabold " +
   "before:text-[color:var(--brand-red)]";
-
 const SCREEN =
-  "absolute left-0 top-0 z-[1] aspect-[1.62] w-full rounded-2xl bg-white object-cover " +
-  "[object-position:top_center] " +
+  "absolute left-0 top-0 z-[1] aspect-[1.62] w-full rounded-2xl border border-[color:rgba(59,59,59,0.08)] bg-white " +
   "[box-shadow:0_28px_80px_rgba(0,0,0,0.1),0_2px_8px_rgba(0,0,0,0.05)] " +
   "[transition:opacity_0.55s_ease,transform_0.55s_cubic-bezier(0.2,0.7,0.2,1)]";
 
@@ -40,30 +38,18 @@ export default function DataPlatformSection() {
   const [active, setActive] = useState(0);
   const itemRefs = useRef<Array<HTMLElement | null>>([]);
 
-  /* `body.scene-dark` (the ink inversion for this section and the header) is
-     driven by GrowthSection, in step with the backdrop that grows over it. */
-
   useEffect(() => {
     const items = itemRefs.current.filter(Boolean) as HTMLElement[];
     if (!items.length) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (!visible) return;
         const next = Number((visible.target as HTMLElement).dataset.index);
         if (!Number.isNaN(next)) setActive(next);
       },
-      {
-        root: null,
-        threshold: [0.35, 0.5, 0.65],
-        rootMargin: "-28% 0px -28% 0px",
-      },
+      { root: null, threshold: [0.35, 0.5, 0.65], rootMargin: "-28% 0px -28% 0px" },
     );
-
     items.forEach((item) => observer.observe(item));
     return () => observer.disconnect();
   }, []);
@@ -79,24 +65,13 @@ export default function DataPlatformSection() {
           ))}
         </h2>
 
-        {/* [align-items:start], not items-start: the latter emits flex-start. */}
         <div className="grid w-full grid-cols-[minmax(260px,0.55fr)_minmax(600px,1.75fr)] [align-items:start] gap-16 max-[1199.98px]:grid-cols-[1fr] max-[1199.98px]:gap-11">
-          {/* Trailing pad decides when the sticky visual lets go. Sized so the
-              release lands as the last copy item reaches the visual's vertical
-              centre — any taller and the copy scrolls up on its own before the
-              two move together. */}
           <div className="flex flex-col gap-[34vh] px-0 pb-[12vh] pt-[6vh] max-[1199.98px]:order-2 max-[1199.98px]:gap-[42px] max-[1199.98px]:p-0">
             {dataPlatform.features.map((feature, index) => (
               <article
-                className={`${COPY_ITEM} ${
-                  index === active
-                    ? "opacity-100 [transform:translateY(-32px)]"
-                    : "opacity-[0.28] [transform:translateY(16px)]"
-                }`}
+                className={`${COPY_ITEM} ${index === active ? "opacity-100 [transform:translateY(-32px)]" : "opacity-[0.28] [transform:translateY(16px)]"}`}
                 data-index={index}
-                ref={(node) => {
-                  itemRefs.current[index] = node;
-                }}
+                ref={(node) => { itemRefs.current[index] = node; }}
                 key={feature.title}
               >
                 <span className={EYEBROW}>{feature.eyebrow}</span>
@@ -128,21 +103,10 @@ export default function DataPlatformSection() {
               </article>
             ))}
           </div>
-
-          <div
-            className="sticky top-[132px] flex min-h-[calc(100vh_-_160px)] items-center max-[1199.98px]:relative max-[1199.98px]:top-auto max-[1199.98px]:order-1 max-[1199.98px]:min-h-0"
-            aria-hidden="true"
-          >
+          <div className="sticky top-[132px] flex min-h-[calc(100vh_-_160px)] items-center max-[1199.98px]:relative max-[1199.98px]:top-auto max-[1199.98px]:order-1 max-[1199.98px]:min-h-0" aria-hidden="true">
             <div className="relative aspect-[1.62] w-[min(1120px,78vw)] overflow-visible [transform:translate(0,-58px)] max-[1199.98px]:mx-auto max-[1199.98px]:max-w-[720px] max-[1199.98px]:[transform:none]">
               {dataPlatform.features.map((feature, index) => (
-                <div
-                  className={`${SCREEN} ${
-                    index === active
-                      ? "opacity-100 [transform:translateY(0)_scale(1)]"
-                      : "opacity-0 [transform:translateY(18px)_scale(0.985)]"
-                  }`}
-                  key={feature.image}
-                />
+                <div className={`${SCREEN} ${index === active ? "opacity-100 [transform:translateY(0)_scale(1)]" : "opacity-0 [transform:translateY(18px)_scale(0.985)]"}`} key={feature.title} />
               ))}
             </div>
           </div>

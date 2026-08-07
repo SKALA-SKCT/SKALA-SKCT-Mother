@@ -22,22 +22,13 @@ const CARD_COMMON =
 // The two variants are kept as complete, mutually exclusive strings. Merging them
 // would leave the winner up to Tailwind's output order rather than the markup.
 const CARD = `${CARD_COMMON} gap-[144px] pl-14 max-[1099.98px]:gap-12 max-[1099.98px]:pl-10`;
-
-/* Image-left variant: the media pane comes first and carries no left pad — except
-   below 1100px, where the tablet `.card` rule sat after `.cardReverse` in the
-   stylesheet and put the 40px left pad back. Reproduced deliberately. */
 const CARD_REVERSE =
   `${CARD_COMMON} flex-row-reverse gap-[72px] pl-0 pr-14 ` +
   "max-[1099.98px]:gap-10 max-[1099.98px]:pl-10 max-[1099.98px]:pr-10";
-
-/* Media pane: square-ish, background plate with the product card on top. */
 const MEDIA =
   "relative flex items-center justify-center overflow-hidden aspect-[0.981172] " +
   "w-px max-w-[470px] flex-[1_0_0] " +
   "max-[767.98px]:aspect-[1.4] max-[767.98px]:w-full max-[767.98px]:flex-none";
-
-// `.cardReverse .media` outranked the phone-width `.media` rule, so the reverse
-// pane keeps its fixed 541px box at every width. Reproduced deliberately.
 const MEDIA_REVERSE =
   "relative flex items-center justify-center overflow-hidden aspect-auto " +
   "min-h-[478px] w-[541px] max-w-none flex-[0_0_541px] self-stretch";
@@ -140,19 +131,8 @@ export default function SolutionsSection() {
                     ))}
                   </div>
                 </div>
-
                 <div className={reverse ? MEDIA_REVERSE : MEDIA}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="absolute inset-0 h-full w-full object-cover"
-                    src={card.bg}
-                    alt=""
-                    aria-hidden="true"
-                  />
-                  <div
-                    className="relative aspect-[1.87766] w-[75%] rounded-2xl border-[1px] border-[color:rgba(59,59,59,0.08)] bg-white [box-shadow:0_18px_54px_rgba(0,0,0,0.08)]"
-                    aria-label={`${card.title} preview placeholder`}
-                  />
+                  <img className="absolute inset-0 h-full w-full object-cover" src={card.bg} alt="" aria-hidden="true" />
                 </div>
               </article>
             );
