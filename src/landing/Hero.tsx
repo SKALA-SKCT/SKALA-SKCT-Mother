@@ -83,7 +83,13 @@ export default function Hero() {
               ))}
             </div>
             <div className={FRAME}>
-              <div className={SHOT} aria-label="서비스 화면 이미지 영역" />
+              <div className={SHOT}>
+                <img
+                  className="h-full w-full rounded-[inherit] object-cover"
+                  src={hero.tabs[active].image}
+                  alt={`${hero.tabs[active].label} 서비스 화면`}
+                />
+              </div>
             </div>
           </div>
         </div>

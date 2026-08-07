@@ -119,9 +119,9 @@ export const hero = {
   title: "SKALA를 위한 효율적인\nSKCT 학습 플랫폼",
   body: "",
   tabs: [
-    { label: "실전 모의고사" },
-    { label: "모의고사 연습 문제" },
-    { label: "유형별 문제 연습" },
+    { label: "실전 모의고사", image: "/assets/hero-mock-test.png" },
+    { label: "모의고사 연습 문제", image: "/assets/hero-practice.png" },
+    { label: "유형별 문제 연습", image: "/assets/hero-type-training.png" },
   ],
 };
 
@@ -266,18 +266,22 @@ export const opportunity = {
     {
       title: "실전처럼 응시하는 모의고사",
       body: "실제 시험과 유사한 화면과 제한 시간 속에서\n실전 감각을 기를 수 있어요.",
+      image: "/assets/opportunity-mock-test.png",
     },
     {
       title: "시험 도구까지 그대로",
       body: "실전 모의고사에서 계산기와 그림판을 사용하며\n시험 환경에 익숙해져요.",
+      image: "/assets/opportunity-tools.png",
     },
     {
       title: "부담 없이 푸는 모의고사 문제",
       body: "모의고사 문제 연습에서 시간 제한 없이\n원하는 출판사와 회차를 골라 풀어요.",
+      image: "/assets/opportunity-practice.png",
     },
     {
       title: "풀이 팁부터 유형별 반복 연습까지",
       body: "유형별 풀이 팁을 익힌 뒤 문제를 풀고,\n랜덤 문제로 준비 상태를 확인해요.",
+      image: "/assets/opportunity-type-training.png",
     },
   ],
 };

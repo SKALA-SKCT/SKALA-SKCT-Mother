@@ -34,7 +34,13 @@ export default function OpportunitySection() {
               >
                 <div className={`relative flex aspect-[1.14607] w-full items-center justify-center overflow-hidden rounded-xl ${TILE_TRANSITION}`}>
                   <img className="absolute inset-0 h-full w-full object-cover" src="/assets/opp-bg.png" alt="" aria-hidden="true" />
-                  <div className={`reveal-tile relative flex aspect-[1.35] w-[76%] items-center justify-center overflow-hidden rounded-2xl border border-[color:rgba(59,59,59,0.08)] bg-white ${TILE_TRANSITION} group-hover:[transform:translateY(-10px)_scale(1.03)]`} aria-label={`${item.title} 이미지 영역`} />
+                  <div className={`reveal-tile relative flex aspect-[1.35] w-[76%] items-center justify-center overflow-hidden rounded-2xl border border-[color:rgba(59,59,59,0.08)] bg-white ${TILE_TRANSITION} group-hover:[transform:translateY(-10px)_scale(1.03)]`}>
+                    <img
+                      className="h-full w-full object-contain"
+                      src={item.image}
+                      alt={`${item.title} 서비스 화면`}
+                    />
+                  </div>
                 </div>
                 <div className="flex max-w-[430px] flex-col gap-2.5">
                   <h3 className={TITLE}>{item.title}</h3>
