@@ -19,26 +19,21 @@ const FRAME =
   "[box-shadow:0_8px_32px_rgba(0,0,0,0.08)] max-[1000px]:rounded-[20px] max-[1000px]:p-2.5";
 const SHOT =
   "absolute left-[1.8112%] top-[2.33236%] h-[95%] w-[96%] rounded-3xl border-[1px] " +
-  "border-[color:rgba(59,59,59,0.08)] bg-white";
+  "overflow-hidden border-[color:rgba(59,59,59,0.08)] bg-white";
+const SHOT_IMAGE =
+  "absolute inset-0 h-full w-full rounded-[inherit] object-cover " +
+  "transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] " +
+  "motion-reduce:transition-none";
 export default function Hero() {
   const [active, setActive] = useState(0);
-  const [autoplayDone, setAutoplayDone] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || autoplayDone) return;
-    if (active >= hero.tabs.length - 1) {
-      setAutoplayDone(true);
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setTimeout(() => {
-      setActive((current) => {
-        const next = Math.min(current + 1, hero.tabs.length - 1);
-        if (next >= hero.tabs.length - 1) setAutoplayDone(true);
-        return next;
-      });
+      setActive((current) => (current + 1) % hero.tabs.length);
     }, AUTOPLAY_MS);
     return () => window.clearTimeout(timer);
-  }, [active, autoplayDone]);
+  }, [active]);
 
   return (
     <section
@@ -69,7 +64,7 @@ export default function Hero() {
                   role="tab"
                   aria-selected={index === active}
                   className={`${PILL} ${index === active ? "text-ink" : "text-muted"}`}
-                  onClick={() => { setAutoplayDone(true); setActive(index); }}
+                  onClick={() => setActive(index)}
                 >
                   <span className="grid h-6 w-6 flex-none place-items-center">
                     {index === active ? (
@@ -84,11 +79,19 @@ export default function Hero() {
             </div>
             <div className={FRAME}>
               <div className={SHOT}>
-                <img
-                  className="h-full w-full rounded-[inherit] object-cover"
-                  src={hero.tabs[active].image}
-                  alt={`${hero.tabs[active].label} 서비스 화면`}
-                />
+                {hero.tabs.map((tab, index) => (
+                  <img
+                    key={tab.image}
+                    className={`${SHOT_IMAGE} ${
+                      index === active
+                        ? "z-[1] scale-100 opacity-100"
+                        : "z-0 scale-[1.015] opacity-0"
+                    }`}
+                    src={tab.image}
+                    alt={index === active ? `${tab.label} 서비스 화면` : ""}
+                    aria-hidden={index !== active}
+                  />
+                ))}
               </div>
             </div>
           </div>
