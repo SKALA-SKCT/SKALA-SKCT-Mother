@@ -30,7 +30,7 @@ const BULLET =
   "before:bg-[rgba(234,0,44,0.1)] before:text-[11px] before:font-extrabold " +
   "before:text-[color:var(--brand-red)]";
 const SCREEN =
-  "absolute left-0 top-0 z-[1] aspect-[1.62] w-full rounded-2xl border border-[color:rgba(59,59,59,0.08)] bg-white " +
+  "absolute left-0 top-0 z-[1] aspect-[1.62] w-full overflow-hidden rounded-2xl border border-[color:rgba(59,59,59,0.08)] bg-white " +
   "[box-shadow:0_28px_80px_rgba(0,0,0,0.1),0_2px_8px_rgba(0,0,0,0.05)] " +
   "[transition:opacity_0.55s_ease,transform_0.55s_cubic-bezier(0.2,0.7,0.2,1)]";
 
@@ -106,7 +106,21 @@ export default function DataPlatformSection() {
           <div className="sticky top-[132px] flex min-h-[calc(100vh_-_160px)] items-center max-[1199.98px]:relative max-[1199.98px]:top-auto max-[1199.98px]:order-1 max-[1199.98px]:min-h-0" aria-hidden="true">
             <div className="relative aspect-[1.62] w-[min(1120px,78vw)] overflow-visible [transform:translate(0,-58px)] max-[1199.98px]:mx-auto max-[1199.98px]:max-w-[720px] max-[1199.98px]:[transform:none]">
               {dataPlatform.features.map((feature, index) => (
-                <div className={`${SCREEN} ${index === active ? "opacity-100 [transform:translateY(0)_scale(1)]" : "opacity-0 [transform:translateY(18px)_scale(0.985)]"}`} key={feature.title} />
+                <div className={`${SCREEN} ${index === active ? "opacity-100 [transform:translateY(0)_scale(1)]" : "pointer-events-none opacity-0 [transform:translateY(18px)_scale(0.985)]"}`} key={feature.title}>
+                  <video
+                    className="h-full w-full object-cover"
+                    src={feature.video}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload={index === 0 ? "auto" : "metadata"}
+                    onLoadedMetadata={(event) => {
+                      event.currentTarget.defaultPlaybackRate = 2;
+                      event.currentTarget.playbackRate = 2;
+                    }}
+                  />
+                </div>
               ))}
             </div>
           </div>

@@ -112,24 +112,26 @@ export default function SolutionsSection() {
                     <p className="whitespace-pre-line text-[18px] leading-[1.7] text-muted">{card.body}</p>
                   </div>
 
-                  <div className="flex flex-col gap-3">
-                    {card.bullets.map((bullet) => (
-                      <p
-                        className="flex items-center gap-2.5 text-[16px] font-normal leading-[1.7]"
-                        key={bullet}
-                      >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          className="h-[18px] w-[18px] flex-none"
-                          src="/assets/tick.svg"
-                          alt=""
-                          width={18}
-                          height={18}
-                        />
-                        {bullet}
-                      </p>
-                    ))}
-                  </div>
+                  {card.bullets.length > 0 && (
+                    <div className="flex flex-col gap-3">
+                      {card.bullets.map((bullet) => (
+                        <p
+                          className="flex items-center gap-2.5 text-[16px] font-normal leading-[1.7]"
+                          key={bullet}
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            className="h-[18px] w-[18px] flex-none"
+                            src="/assets/tick.svg"
+                            alt=""
+                            width={18}
+                            height={18}
+                          />
+                          {bullet}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className={reverse ? MEDIA_REVERSE : MEDIA}>
                   <img className="absolute inset-0 h-full w-full object-cover" src={card.bg} alt="" aria-hidden="true" />

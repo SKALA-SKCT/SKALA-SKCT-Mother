@@ -171,21 +171,21 @@ export const solutions = {
     {
       title: "실전 모의고사",
       body: "제한 시간과 문항 흐름을 실제 시험처럼 구성해\n실전 집중력을 점검해요.",
-      bullets: ["회차별 실전 세트를 풀어요", "제한 시간 안에 풀이해요", "점수와 정답률을 확인해요"],
+      bullets: [],
       bg: "/assets/sol-1-bg.png",
       imageSide: "right" as const,
     },
     {
       title: "모의고사 문제 연습",
       body: "다양한 모의고사를 시간 제한 없이 풀 수 있어요.",
-      bullets: ["여러 출판사 모의고사를 골라 풀어요", "시간 제한 없이 편하게 풀어요", "결과 페이지에서 피드백을 받아요"],
+      bullets: [],
       bg: "/assets/sol-2-bg.png",
       imageSide: "left" as const,
     },
     {
       title: "유형별 문제 연습",
       body: "언어이해, 자료해석, 수리, 추리 등\n약한 유형만 골라 반복 훈련해요.",
-      bullets: ["유형별 풀이 팁을 확인해요", "유형별 문제를 풀어요", "랜덤 문제로 준비 상태를 확인해요"],
+      bullets: [],
       bg: "/assets/sol-3-bg.png",
       imageSide: "right" as const,
     },
@@ -201,18 +201,21 @@ export const dataPlatform = {
       title: "실전\n모의고사",
       body: "회차별 시험 흐름을 그대로 따라가며\n제한 시간 안에서 집중력을 점검해요.",
       bullets: ["회차별 실전 세트를 풀어요", "제한 시간 안에 풀이해요", "점수 흐름을 확인해요"],
+      video: "/videos/mocktest.mp4",
     },
     {
       eyebrow: "STEP 02 · PRACTICE",
       title: "모의고사\n문제 연습",
       body: "다양한 출판사의 모의고사를\n시간 제한 없이 풀어 보세요.",
       bullets: ["여러 출판사 모의고사를 골라 풀어요", "시간 제한 없이 편하게 풀어요", "결과 페이지에서 피드백을 받아요"],
+      video: "/videos/practice.mp4",
     },
     {
       eyebrow: "STEP 03 · TYPE TRAINING",
       title: "유형별\n문제 연습",
       body: "취약한 문제 유형을 확인하고\n필요한 유형만 골라 반복 학습해요.",
       bullets: ["유형별 풀이 팁을 확인해요", "유형별 문제를 풀어요", "랜덤 문제로 준비 상태를 확인해요"],
+      video: "/videos/tutorial.mp4",
     },
   ],
 };
@@ -220,21 +223,21 @@ export const dataPlatform = {
 export const stats = [
   {
     value: 100,
-    suffix: "명",
+    suffix: "명+",
     label: "누적 가입자",
     body: "약 100명의 SKALA 구성원이 가입해\n학습 기록을 쌓고 있어요.",
   },
   {
-    value: 2500,
+    value: 1600,
     suffix: "+",
     label: "문제",
-    body: "2,500개 이상의 문제로\n다양한 유형을 충분히 연습할 수 있어요.",
+    body: "1,600개 이상의 문제로\n다양한 유형을 충분히 연습할 수 있어요.",
   },
   {
-    value: 5,
-    suffix: "개+",
-    label: "출판사 모의고사",
-    body: "여러 출판사의 모의고사를 한곳에서\n골라 풀 수 있어요.",
+    value: 65,
+    suffix: "개",
+    label: "세부 문제 유형",
+    body: "취약한 유형을 골라\n집중적으로 반복 학습해요.",
   },
 ];
 
