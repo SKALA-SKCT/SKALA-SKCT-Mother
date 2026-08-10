@@ -234,7 +234,7 @@ export const stats = [
     body: "1,600개 이상의 문제로\n다양한 유형을 충분히 연습할 수 있어요.",
   },
   {
-    value: 65,
+    value: 21,
     suffix: "개",
     label: "세부 문제 유형",
     body: "취약한 유형을 골라\n집중적으로 반복 학습해요.",
