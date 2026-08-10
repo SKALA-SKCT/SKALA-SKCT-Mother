@@ -264,7 +264,7 @@ export const workflow = {
 };
 
 export const opportunity = {
-  title: "SKCT 준비에 필요한\n세 가지 학습 방식",
+  title: "실전 응시부터 유형별 반복 학습까지\nSKCT 준비를 한곳에서",
   items: [
     {
       title: "실전처럼 응시하는 모의고사",
