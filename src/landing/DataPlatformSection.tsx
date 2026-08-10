@@ -36,23 +36,52 @@ const SCREEN =
 
 export default function DataPlatformSection() {
   const [active, setActive] = useState(0);
+  const [playing, setPlaying] = useState<number | null>(null);
   const itemRefs = useRef<Array<HTMLElement | null>>([]);
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
 
   useEffect(() => {
     const items = itemRefs.current.filter(Boolean) as HTMLElement[];
     if (!items.length) return;
     const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible) return;
-        const next = Number((visible.target as HTMLElement).dataset.index);
-        if (!Number.isNaN(next)) setActive(next);
+      () => {
+        const viewportCenter = window.innerHeight / 2;
+        const visible = items
+          .map((item) => ({ item, rect: item.getBoundingClientRect() }))
+          .filter(({ rect }) => rect.bottom > window.innerHeight * 0.28 && rect.top < window.innerHeight * 0.72)
+          .sort((a, b) => Math.abs((a.rect.top + a.rect.bottom) / 2 - viewportCenter) - Math.abs((b.rect.top + b.rect.bottom) / 2 - viewportCenter))[0];
+
+        if (!visible) {
+          setPlaying(null);
+          return;
+        }
+
+        const next = Number(visible.item.dataset.index);
+        if (!Number.isNaN(next)) {
+          setActive(next);
+          setPlaying(next);
+        }
       },
       { root: null, threshold: [0.35, 0.5, 0.65], rootMargin: "-28% 0px -28% 0px" },
     );
     items.forEach((item) => observer.observe(item));
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (!video) return;
+
+      if (index === playing) {
+        video.currentTime = 0;
+        video.defaultPlaybackRate = 2;
+        video.playbackRate = 2;
+        void video.play().catch(() => undefined);
+      } else {
+        video.pause();
+      }
+    });
+  }, [playing]);
 
   return (
     <section className={SECTION} id="practice">
@@ -110,11 +139,11 @@ export default function DataPlatformSection() {
                   <video
                     className="h-full w-full object-cover"
                     src={feature.video}
-                    autoPlay
                     loop
                     muted
                     playsInline
                     preload={index === 0 ? "auto" : "metadata"}
+                    ref={(node) => { videoRefs.current[index] = node; }}
                     onLoadedMetadata={(event) => {
                       event.currentTarget.defaultPlaybackRate = 2;
                       event.currentTarget.playbackRate = 2;
