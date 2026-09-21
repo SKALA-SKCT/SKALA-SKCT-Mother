@@ -1,7 +1,8 @@
 // 인증 게이트. /api/* 중 로그인 필수 엔드포인트(me·link)를 보호하고,
 // 세션 쿠키에서 클레임을 도출해 context.data.claims로 전달한다.
 // OAuth·레거시 로그인·로그아웃은 미인증 접근 허용. 정적 자산/SPA는 통과.
-import { readSessionToken, verifySession } from '../shared/auth';
+import { readSessionToken, sessionCookie, verifySession } from '../shared/auth';
+import { cookieOptsFrom } from '../shared/edge';
 
 function json401(): Response {
   return new Response(JSON.stringify({ error: '로그인이 필요합니다.' }), {
@@ -18,8 +19,11 @@ export async function onRequest(context: any): Promise<Response> {
   const url = new URL(request.url);
 
   if (request.method === 'GET' && url.hostname === 'skala-skct.com') {
+    const token = readSessionToken(request.headers.get('Cookie'));
     url.hostname = 'www.skala-skct.com';
-    return Response.redirect(url.toString(), 308);
+    const headers = new Headers({ location: url.toString() });
+    if (token) headers.set('set-cookie', sessionCookie(token, cookieOptsFrom(env, request)));
+    return new Response(null, { status: 308, headers });
   }
 
   if (url.pathname.startsWith('/api/')) {
