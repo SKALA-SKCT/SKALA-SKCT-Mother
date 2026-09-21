@@ -16,8 +16,12 @@ export function json(o: unknown, status = 200, extra: Record<string, string> = {
 }
 
 export function cookieOptsFrom(env: any, request: Request): CookieOpts {
+  const hostname = new URL(request.url).hostname;
+  const productionDomain = hostname === 'skala-skct.com' || hostname.endsWith('.skala-skct.com')
+    ? '.skala-skct.com'
+    : undefined;
   return {
-    domain: env.SESSION_COOKIE_DOMAIN || undefined,
+    domain: env.SESSION_COOKIE_DOMAIN || productionDomain,
     secure: new URL(request.url).protocol === 'https:',
   };
 }
