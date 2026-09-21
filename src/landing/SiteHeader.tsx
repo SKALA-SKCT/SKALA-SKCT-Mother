@@ -4,15 +4,9 @@ import { CONTAINER } from "../styleTokens";
 import { useAuth } from "../auth";
 import { useState } from "react";
 
-/* Follows the scene dimming set by DataPlatformSection. The `body.scene-dark`
-   variants override the ink tokens on the header itself, so no other section is
-   affected. The header goes fully transparent in the dark scene so the backdrop
-   reads as one continuous surface. */
 const HEADER =
-  "sticky top-0 z-[60] bg-[rgba(247,247,245,0.86)] " +
-  "[backdrop-filter:blur(18px)_saturate(160%)] [transition:background-color_0.3s_ease] " +
-  "[body.scene-dark_&]:bg-transparent [body.scene-dark_&]:[backdrop-filter:none] " +
-  "[body.scene-dark_&]:[--ink:#f5f5f3] [body.scene-dark_&]:[--ink-inverse:#131313]";
+  "sticky top-0 z-[60] bg-[rgba(250,250,249,0.86)] " +
+  "[backdrop-filter:blur(18px)_saturate(160%)] [transition:background-color_0.3s_ease]";
 
 const NAV_LINK = "text-ink [transition:color_0.25s_ease] hover:text-skRed";
 const ACTIVE_NAV_LINK = "text-skRed";
@@ -22,9 +16,9 @@ const ACTIVE_NAV_LINK = "text-skRed";
 const showPending = () => window.alert("서비스 준비 중입니다!");
 
 const LOGIN =
-  "inline-flex min-h-[38px] items-center justify-center rounded-[10px] bg-ink px-[18px] py-[6px] " +
-  "leading-[1.7] text-inverse [transition:background-color_0.25s_ease,transform_0.25s_ease] " +
-  "hover:bg-skRed hover:[transform:translateY(-1px)] max-[900px]:hidden";
+  "inline-flex min-h-[34px] items-center justify-center rounded-[10px] border border-black/10 bg-white px-[13px] py-[7px] " +
+  "text-[14px] font-semibold leading-none text-ink [transition:background-color_0.2s_ease] " +
+  "hover:bg-black/[0.03] max-[900px]:hidden";
 
 export default function SiteHeader() {
   const { user, loading, logout } = useAuth();

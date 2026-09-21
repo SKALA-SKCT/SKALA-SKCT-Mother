@@ -7,6 +7,7 @@ const motherUrl = import.meta.env.VITE_MOTHER_URL ?? "https://www.skala-skct.com
 const skctUrl = import.meta.env.VITE_MOCK_URL ?? "https://mock.skala-skct.com";
 const skalaUrl = import.meta.env.VITE_PRACTICE_URL ?? "https://practice.skala-skct.com";
 const tutorialUrl = import.meta.env.VITE_TUTORIAL_URL ?? "https://tutorial.skala-skct.com";
+const communityUrl = import.meta.env.VITE_COMMUNITY_URL ?? "https://community.skala-skct.com";
 
 export type NavLink = { label: string; href?: string; pending?: boolean };
 
@@ -15,6 +16,7 @@ const navLinks: NavLink[] = [
   { label: "실전 모의고사", href: skctUrl },
   { label: "모의고사 문제 연습", href: skalaUrl },
   { label: "유형별 문제 연습", href: tutorialUrl },
+  { label: "게시판", href: communityUrl },
 ];
 
 export const nav = {
