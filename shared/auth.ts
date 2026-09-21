@@ -116,6 +116,15 @@ export function readCookie(cookieHeader: string | null, name: string): string | 
   return null;
 }
 export const readSessionToken = (cookieHeader: string | null) => readCookie(cookieHeader, SESSION_COOKIE_NAME);
+export function readSessionTokens(cookieHeader: string | null): string[] {
+  if (!cookieHeader) return [];
+  return cookieHeader.split(';').flatMap((part) => {
+    const i = part.indexOf('=');
+    if (i === -1 || part.slice(0, i).trim() !== SESSION_COOKIE_NAME) return [];
+    const token = part.slice(i + 1).trim();
+    return token ? [token] : [];
+  });
+}
 
 /* ── 랜덤 토큰 (OAuth state 등) ────────────────────────────── */
 function toHex(buf: ArrayBufferLike): string {

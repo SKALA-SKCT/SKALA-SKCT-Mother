@@ -1,7 +1,7 @@
 // 인증 게이트. /api/* 중 로그인 필수 엔드포인트(me·link)를 보호하고,
 // 세션 쿠키에서 클레임을 도출해 context.data.claims로 전달한다.
 // OAuth·레거시 로그인·로그아웃은 미인증 접근 허용. 정적 자산/SPA는 통과.
-import { readSessionToken, sessionCookie, verifySession } from '../shared/auth';
+import { readSessionTokens, sessionCookie, verifySession } from '../shared/auth';
 import { cookieOptsFrom } from '../shared/edge';
 
 function json401(): Response {
@@ -19,7 +19,16 @@ export async function onRequest(context: any): Promise<Response> {
   const url = new URL(request.url);
 
   if (request.method === 'GET' && url.hostname === 'skala-skct.com') {
-    const token = readSessionToken(request.headers.get('Cookie'));
+    const tokens = readSessionTokens(request.headers.get('Cookie'));
+    let token: string | null = null;
+    if (env.SESSION_SECRET) {
+      for (const candidate of tokens) {
+        if (await verifySession(candidate, env.SESSION_SECRET)) {
+          token = candidate;
+          break;
+        }
+      }
+    }
     url.hostname = 'www.skala-skct.com';
     const headers = new Headers({ location: url.toString() });
     if (token) headers.set('set-cookie', sessionCookie(token, cookieOptsFrom(env, request)));
@@ -27,10 +36,20 @@ export async function onRequest(context: any): Promise<Response> {
   }
 
   if (url.pathname.startsWith('/api/')) {
-    const claims = env.SESSION_SECRET
-      ? await verifySession(readSessionToken(request.headers.get('Cookie')), env.SESSION_SECRET)
-      : null;
+    let claims = null;
+    let sessionToken = null;
+    if (env.SESSION_SECRET) {
+      for (const candidate of readSessionTokens(request.headers.get('Cookie'))) {
+        const verified = await verifySession(candidate, env.SESSION_SECRET);
+        if (verified) {
+          claims = verified;
+          sessionToken = candidate;
+          break;
+        }
+      }
+    }
     context.data.claims = claims;
+    context.data.sessionToken = sessionToken;
 
     const open = OPEN.some((p) => url.pathname === p || url.pathname.startsWith(p));
     if (!open && !claims) return json401();
