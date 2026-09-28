@@ -224,16 +224,16 @@ export const dataPlatform = {
 
 export const stats = [
   {
-    value: 100,
+    value: 350,
     suffix: "명+",
     label: "누적 가입자",
-    body: "약 100명의 SKALA 구성원이 가입해\n학습 기록을 쌓고 있어요.",
+    body: "약 350명의 SKALA 구성원이 가입해\n학습 기록을 쌓고 있어요.",
   },
   {
-    value: 1600,
+    value: 4000,
     suffix: "+",
     label: "문제",
-    body: "1,600개 이상의 문제로\n다양한 유형을 충분히 연습할 수 있어요.",
+    body: "4,000개 이상의 문제로\n다양한 유형을 충분히 연습할 수 있어요.",
   },
   {
     value: 21,
